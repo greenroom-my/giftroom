@@ -23,18 +23,11 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
 
-//        $validator = Validator::make($request->all(), [
-//            'name' => 'required|string|max:255',
-//            'email' => 'required|string|email|max:255|unique:users',
-//            'password' => 'required|string|min:6|confirmed',
-//        ]);
-
-
         $validator = $this->validator($request->all());
 
         if ($validator->fails()) {
 
-            $developerMsg = "Validation Error!";
+            $developerMsg = "Validation error";
 
             $userMsg = $validator->errors();
 
@@ -45,8 +38,8 @@ class RegisterController extends Controller
 
             if ($user = $this->create($request->all())) {
 
-                $developerMsg = "success!";
-                $userMsg = "Registration successfully!";
+                $developerMsg = "Success";
+                $userMsg = "Registration successfully";
 
                 return JsonResponse::success($developerMsg, $userMsg, $user);
             };

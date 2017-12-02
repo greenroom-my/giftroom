@@ -11,9 +11,11 @@ namespace App\API\V1\Auth;
 
 use App\Classes\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -24,7 +26,15 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $this->validateLogin($request);
+        $validator = $this->validateLogin($request);
+
+        if ($validator->fails()) {
+
+            $developerMsg = "Validation Error";
+            $userMsg = $validator->errors();
+
+            return JsonResponse::validateError($developerMsg, $userMsg);
+        }
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
@@ -73,11 +83,12 @@ class LoginController extends Controller
     {
         $this->clearLoginAttempts($request);
 
-        $developerMsg = 'success!';
-        $userMsg = 'You login successfully!';
-        $data = $request->all();
+        $user = User::where('email', $request->email)->first();
 
-        return JsonResponse::success($developerMsg, $userMsg, $data);
+        $developerMsg = 'Success';
+        $userMsg = 'You login successfully';
+
+        return JsonResponse::success($developerMsg, $userMsg, $user);
     }
 
     /**
@@ -86,7 +97,7 @@ class LoginController extends Controller
      */
     protected function sendFailedLoginResponse(Request $request)
     {
-        $developerMsg = 'Validation Error!';
+        $developerMsg = 'Validation error';
         $userMsg = 'These credentials do not match our records';
         $errorCode = '422';
 
@@ -94,5 +105,12 @@ class LoginController extends Controller
 
     }
 
+    protected function validateLogin(Request $request)
+    {
+        return $validatedData = Validator::make($request->all(), [
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+        ]);
+    }
 
 }
