@@ -6,7 +6,11 @@
                 <div v-else></div>
             </div>
             <div>
-                <a v-if="logo == true" class="navbar-brand" href="#">Giftroom</a>
+                <router-link
+                        v-if="logo == true"
+                        to="/" tag="a" class="navbar-brand">
+                    Giftroom
+                </router-link>
                 <div v-else></div>
             </div>
             <i class="text-white fa fa-2x fa-github"></i>
