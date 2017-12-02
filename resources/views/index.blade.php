@@ -7,7 +7,7 @@
 
 <body>
 <div id="app">
-    <giftroom-navbar logo="false"></giftroom-navbar>
+    <giftroom-navbar :logo="navbar.logo"></giftroom-navbar>
 
     <router-view></router-view>
 </div>
