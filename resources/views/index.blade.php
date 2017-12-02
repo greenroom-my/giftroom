@@ -6,9 +6,11 @@
 </head>
 
 <body>
-@include('_layouts.navbar-top')
-<div class="container">
+<div id="app">
+    @include('_layouts.navbar-top')
+    <div class="container">
 
+    </div>
 </div>
 
 <script src="{{ asset('js/app.js') }}"></script>
