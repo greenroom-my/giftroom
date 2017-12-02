@@ -15,9 +15,9 @@ class CreateMatchesTable extends Migration
     {
         Schema::create('matches', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('santa_id');
-            $table->integer('target_id');
-            $table->integer('room_id');
+            $table->integer('santa_id')->unsigned();
+            $table->integer('target_id')->unsigned();
+            $table->integer('room_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('santa_id')->references('id')->on('users');

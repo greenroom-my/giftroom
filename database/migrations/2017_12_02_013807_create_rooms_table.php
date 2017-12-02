@@ -17,9 +17,9 @@ class CreateRoomsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('room_name');
-            $table->string('room_description');
-            $table->string('budget');
-            $table->date('event_day');
+            $table->string('room_description')->nullable();
+            $table->string('budget')->nullable();
+            $table->date('event_day')->nullable();
             $table->integer('created_by')->unsigned();
             $table->timestamps();
 
