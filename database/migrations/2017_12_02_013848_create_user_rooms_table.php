@@ -14,8 +14,9 @@ class CreateUserRoomsTable extends Migration
     public function up()
     {
         Schema::create('user_rooms', function (Blueprint $table) {
-            $table->increments('user_id')->unsigned();
-            $table->increments('room_id')->unsigned();
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('room_id')->unsigned();
             $table->dateTime('join_at')->nullable();
             $table->timestamps();
 
