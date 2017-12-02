@@ -8,3 +8,19 @@ label { font-size: 0.7rem; }
   color: $brand-primary;
   color: #f48eb1;
 }
+
+.btn-room-id {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.6rem;
+  color: #028802;
+  height: 80px !important;
+
+  &::-webkit-input-placeholder {
+    color: #dedede !important;
+  }
+
+  &::-moz-placeholder {
+    color: #dedede !important;
+  }
+}
