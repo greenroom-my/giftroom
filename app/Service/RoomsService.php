@@ -8,7 +8,7 @@ class RoomsService
 {
     public static function create()
     {
-        Room::create
+        
     }
 
     public static function store()
