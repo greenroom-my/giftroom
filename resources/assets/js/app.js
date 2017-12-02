@@ -1,3 +1,5 @@
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -6,8 +8,8 @@
  */
 
 require('./bootstrap');
+window.Vue = new Vue;
 
-window.Vue = require('vue');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -15,8 +17,25 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.use(VueRouter);
+Vue.component('giftroom-navbar', require('./components/GiftroomNavbar.vue'));
+
+const router = new VueRouter({
+    routes: [
+        {
+            path: '/',
+            component: require('./components/views/HomeView.vue')
+        },
+        {
+            path: '/register',
+            component: require('./components/views/RegisterView.vue')
+        }
+    ]
+});
 
 const app = new Vue({
-    el: '#app'
-});
+    router,
+    mounted() {
+        console.log(this)
+    }
+}).$mount('#app');
