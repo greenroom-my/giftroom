@@ -9,6 +9,11 @@ import VueRouter from 'vue-router';
 
 require('./bootstrap');
 window.Vue = new Vue;
+window.VueEvent = new Vue({});
+// VueEvent.$on('pageChange', function(data) {
+//     console.log(data);
+// });
+
 
 
 /**
@@ -29,13 +34,27 @@ const router = new VueRouter({
         {
             path: '/register',
             component: require('./components/views/RegisterView.vue')
+        },
+        {
+            path: '/first-time',
+            component: require('./components/views/FirstTimeView.vue')
         }
     ]
 });
 
 const app = new Vue({
-    router,
-    mounted() {
-        console.log(this)
+    router: router,
+    data: {
+        navbar: {
+            logo: true,
+            menu: true
+        }
+    },
+    created() {
+        let navbar = this.navbar;
+        window.VueEvent.$on('pageChange', function(data) {
+            navbar.logo = data.logo;
+            navbar.menu = data.menu;
+        });
     }
 }).$mount('#app');
