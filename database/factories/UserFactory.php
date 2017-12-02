@@ -51,7 +51,7 @@ $factory->define(App\Models\UserRoom::class, function (Faker $faker) {
 $factory->define(App\Models\Wishlist::class, function (Faker $faker) {
     return [
         'description'=> $faker->name,
-        'user_id'=> 15,
+        'user_id'=> 1,
         'room_id'=> 5,
     ];
 });
