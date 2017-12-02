@@ -1,0 +1,50 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Monster
+ * Date: 02/12/2017
+ * Time: 7:32 PM
+ */
+
+namespace App\Http\Middleware;
+
+
+use App\Classes\JsonResponse;
+use App\Models\User;
+
+class ApiAuthentication
+{
+
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
+     * @param  string|null $guard
+     * @return mixed
+     */
+    public function handle($request, \Closure $next)
+    {
+        // mei you gei http user id
+        if (!$_SERVER['HTTP_USERID']) {
+            return JsonResponse::error('error', 'error', 401);
+        }
+
+        $userId = $_SERVER['HTTP_USERID'];
+        // zhao bu dao user
+        try {
+            $user = User::findOrFail($userId);
+        } catch (\Exception $e) {
+            return JsonResponse::error('error', 'error', 404);
+        }
+
+        $request->merge(['user' => $user ]);
+
+        $request->setUserResolver(function () use ($user) {
+            return $user;
+        });
+
+        return $next($request);
+    }
+
+}
