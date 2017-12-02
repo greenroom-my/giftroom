@@ -1,15 +1,22 @@
+// BS4 Classes
+.form-group label { font-size: 0.7rem; }
 .bg-light { background-color: $brand-primary !important; }
 .navbar-brand { font-family: 'Sacramento',Helvetica; }
-label { font-size: 0.7rem; }
+.alert-dark {
+  color: #fff;
+  background-color: #333;
+  border-color: transparent;
+}
 
+// Custom Classes
 .home-logo span {
-  font-family: 'Sacramento',Helvetica;
   font-size: 3.5rem;
+  font-family: "Sacramento", Helvetica;
   color: $brand-primary;
   color: #f48eb1;
 }
 
-.btn-room-id {
+.input-room-id {
   text-align: center;
   text-transform: uppercase;
   font-size: 1.6rem;
@@ -24,3 +31,9 @@ label { font-size: 0.7rem; }
     color: #dedede !important;
   }
 }
+
+.vue-up .message {
+  padding: 15px !important;
+  font-size: 2rem !important;
+}
+
