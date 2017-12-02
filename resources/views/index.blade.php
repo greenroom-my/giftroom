@@ -7,10 +7,9 @@
 
 <body>
 <div id="app">
-    @include('_layouts.navbar-top')
-    <div class="container">
+    <giftroom-navbar logo="false"></giftroom-navbar>
 
-    </div>
+    <router-view></router-view>
 </div>
 
 <script src="{{ asset('js/app.js') }}"></script>
