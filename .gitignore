@@ -3,6 +3,7 @@
 /public/storage
 /public/css
 /public/js
+/public/service-worker.js
 /public/fonts
 /storage/*.key
 /vendor
