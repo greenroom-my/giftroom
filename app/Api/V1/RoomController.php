@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Validator;
 
 class RoomController
 {
+    const INVITED = 1;
+    const CREATE_ROOM = 2;
+    const JOIN_ROOM = 3;
     /**
      * @param Request $request
      * @param $name
@@ -104,10 +107,13 @@ class RoomController
         return JsonResponse::error($developerMsg, $userMsg);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function roomInvited(Request $request)
     {
-
-        $validator = $this->inviteValidation($request);
+        $validator = $this->makeValidation(self::INVITED,$request);
 
         if ($validator->fails()) {
 
@@ -141,11 +147,70 @@ class RoomController
     }
 
 
-    protected function inviteValidation(Request $request)
+    public function createRoom(Request $request)
     {
-        return $validatedData = Validator::make($request->all(), [
-            'room_id' => 'required|int',
-            'email' => 'required|string',
-        ]);
+        $validator = $this->makeValidation(self::CREATE_ROOM,$request);
+
+        if ($validator->fails()) {
+
+            $developerMsg = "Validation Error";
+            $userMsg = $validator->errors();
+
+            return JsonResponse::validateError($developerMsg, $userMsg);
+        }
+
+        try{
+            $invited = Room::create([
+                'name'=> $request->name,
+                'room_name' => $request->room_name,
+                'room_description' => $request->room_description,
+                'budget' => $request->budget,
+                'event_day' => $request->event_day,
+                'created_by' => $request->created_by,
+            ]);
+
+            $developerMsg = "Room is created";
+            $userMsg = "Your room is created";
+
+            return JsonResponse::success($developerMsg, $userMsg,$invited);
+
+        }catch (\Exception $e){
+
+            $developerMsg = $e->getMessage();
+            $userMsg = "Your room create failed";
+
+            return JsonResponse::error($developerMsg, $userMsg);
+        }
+
+    }
+
+    protected function makeValidation($action ,Request $request)
+    {
+        switch ($action) {
+            case $action == 1 :
+                return $validatedData = Validator::make($request->all(), [
+                    'room_id' => 'required|int',
+                    'email' => 'required|string',
+                ]);
+                break;
+
+            case $action == 2:
+                return $validatedData = Validator::make($request->all(), [
+                    'name' => 'required|string',
+                    'room_name' => 'required|string|unique:rooms',
+                    'room_description' => 'required|string',
+                    'budget' => 'required|string',
+                    'event_day' => 'required|string',
+                    'created_by' => 'required|int',
+                ]);
+                break;
+
+            case $action == 3:
+
+                break;
+
+            default:
+
+        }
     }
 }
