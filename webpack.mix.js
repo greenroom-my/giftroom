@@ -21,3 +21,5 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'node_modules/font-awesome/fonts/fontawesome-webfont.woff',
         'node_modules/font-awesome/fonts/fontawesome-webfont.woff2'
     ], 'public/css');
+
+mix.js('resources/assets/js/service-worker.js', 'public/')

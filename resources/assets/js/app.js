@@ -14,8 +14,6 @@ window.VueEvent = new Vue({});
 //     console.log(data);
 // });
 
-
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -26,35 +24,40 @@ Vue.use(VueRouter);
 Vue.component('giftroom-navbar', require('./components/GiftroomNavbar.vue'));
 
 const router = new VueRouter({
-    routes: [
-        {
-            path: '/',
-            component: require('./components/views/HomeView.vue')
-        },
-        {
-            path: '/register',
-            component: require('./components/views/RegisterView.vue')
-        },
-        {
-            path: '/first-time',
-            component: require('./components/views/FirstTimeView.vue')
-        }
-    ]
+  routes: [
+    {
+      path: '/',
+      component: require('./components/views/HomeView.vue')
+    },
+    {
+      path: '/register',
+      component: require('./components/views/RegisterView.vue')
+    },
+    {
+      path: '/first-time',
+      component: require('./components/views/FirstTimeView.vue')
+    }
+  ]
 });
 
 const app = new Vue({
-    router: router,
-    data: {
-        navbar: {
-            logo: true,
-            menu: true
-        }
-    },
-    created() {
-        let navbar = this.navbar;
-        window.VueEvent.$on('pageChange', function(data) {
-            navbar.logo = data.logo;
-            navbar.menu = data.menu;
-        });
+  router: router,
+  data: {
+    navbar: {
+      logo: true,
+      menu: true
     }
+  },
+  created (){
+    let navbar = this.navbar;
+    window.VueEvent.$on('pageChange', function (data){
+      navbar.logo = data.logo;
+      navbar.menu = data.menu;
+    });
+  }
 }).$mount('#app');
+
+if ( 'serviceWorker' in navigator ) {
+  navigator.serviceWorker
+           .register('/service-worker.js');
+}
