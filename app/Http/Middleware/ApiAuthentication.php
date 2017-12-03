@@ -26,8 +26,10 @@ class ApiAuthentication
     public function handle($request, \Closure $next)
     {
         // mei you gei http user id
-        if (!$_SERVER['HTTP_USERID']) {
-            return JsonResponse::error('error', 'error', 401);
+        if (empty($_SERVER['HTTP_USERID'])) {
+
+            $developerMsg = 'Headers did\'not have user id';
+            return JsonResponse::error($developerMsg, 'error', 401);
         }
 
         $userId = $_SERVER['HTTP_USERID'];
