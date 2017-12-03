@@ -21,7 +21,7 @@ Route::middleware(['api', 'api.auth'])->group(function () {
     Route::GET('/room/{name}/matches', '\App\Api\V1\RoomController@getRoomMatches');
     Route::GET('/room/{name}/my-wish-list','\App\Api\V1\RoomController@getOwnWishList');
 
-    Route::POST('/room/invites');
+    Route::POST('/room/invites','\App\Api\V1\RoomController@roomInvited');
     Route::POST('/room');
     Route::POST('/room/matches');
     Route::POST('/room/my-wish-list');

@@ -10,8 +10,10 @@ namespace App\API\V1;
 
 
 use App\Classes\JsonResponse;
+use App\Models\Invite;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RoomController
 {
@@ -100,5 +102,50 @@ class RoomController
         $developerMsg = 'Wish list not exists';
         $userMsg = 'You did\'t have any wish list';
         return JsonResponse::error($developerMsg, $userMsg);
+    }
+
+    public function roomInvited(Request $request)
+    {
+
+        $validator = $this->inviteValidation($request);
+
+        if ($validator->fails()) {
+
+            $developerMsg = "Validation Error";
+            $userMsg = $validator->errors();
+
+            return JsonResponse::validateError($developerMsg, $userMsg);
+        }
+
+        $roomId = $request->room_id;
+        $email = $request->email;
+
+        try{
+            $invited = Invite::create([
+                'room_id'=> $roomId,
+                'email' => $email
+            ]);
+
+            $developerMsg = "Invitation sent";
+            $userMsg = "Send invitation success";
+
+            return JsonResponse::success($developerMsg, $userMsg,$invited);
+
+        }catch (\Exception $e){
+
+            $developerMsg = $e->getMessage();
+            $userMsg = "Your invitation failed";
+
+            return JsonResponse::error($developerMsg, $userMsg);
+        }
+    }
+
+
+    protected function inviteValidation(Request $request)
+    {
+        return $validatedData = Validator::make($request->all(), [
+            'room_id' => 'required|int',
+            'email' => 'required|string',
+        ]);
     }
 }
