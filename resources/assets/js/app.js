@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import VueUp from 'vueup'
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -10,9 +11,6 @@ import VueRouter from 'vue-router';
 require('./bootstrap');
 window.Vue = new Vue;
 window.VueEvent = new Vue({});
-// VueEvent.$on('pageChange', function(data) {
-//     console.log(data);
-// });
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -21,40 +19,46 @@ window.VueEvent = new Vue({});
  */
 
 Vue.use(VueRouter);
-Vue.component('giftroom-navbar', require('./components/GiftroomNavbar.vue'));
+Vue.use(VueUp);
+Vue.component('giftroom-navbar', require('./components/Navbar.vue'));
 
 const router = new VueRouter({
-  routes: [
-    {
-      path: '/',
-      component: require('./components/views/HomeView.vue')
-    },
-    {
-      path: '/register',
-      component: require('./components/views/RegisterView.vue')
-    },
-    {
-      path: '/first-time',
-      component: require('./components/views/FirstTimeView.vue')
-    }
-  ]
+    routes: [
+        {
+            path: '/',
+            component: require('./views/HomeView.vue')
+        },
+        {
+            path: '/register',
+            component: require('./views/RegisterView.vue')
+        },
+        {
+            path: '/first-time',
+            component: require('./views/FirstTimeView.vue')
+        },
+        {
+            path: '/room-home',
+            component: require('./views/RoomHomeView.vue')
+        }
+    ]
 });
 
 const app = new Vue({
-  router: router,
-  data: {
-    navbar: {
-      logo: true,
-      menu: true
+    router: router,
+    data: {
+        navbar: {
+            logo: true,
+            menu: true
+        },
+        event: window.VueEvent
+    },
+    created() {
+        let navbar = this.navbar;
+        window.VueEvent.$on('pageChange', function(data) {
+            navbar.logo = data.logo;
+            navbar.menu = data.menu;
+        });
     }
-  },
-  created (){
-    let navbar = this.navbar;
-    window.VueEvent.$on('pageChange', function (data){
-      navbar.logo = data.logo;
-      navbar.menu = data.menu;
-    });
-  }
 }).$mount('#app');
 
 if ( 'serviceWorker' in navigator ) {

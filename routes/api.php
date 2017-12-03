@@ -11,15 +11,15 @@
 |
 */
 
-Route::POST('user/register', '\App\Api\V1\Auth\RegisterController@register');
+Route::POST('/user/register', '\App\Api\V1\Auth\RegisterController@register');
 Route::POST('/user/login', '\App\Api\V1\Auth\LoginController@login');
 
 
 Route::middleware(['api', 'api.auth'])->group(function () {
 
-    Route::GET('/room/{name}', '\App\Api\V1\Auth\RoomController@getRoom');
-    Route::GET('/room/room/{name}/matches');
-    Route::GET('/room/my-wish-list');
+    Route::GET('/room/{name}', '\App\Api\V1\RoomController@getRoom');
+    Route::GET('/room/{name}/matches', '\App\Api\V1\RoomController@getRoomMatches');
+    Route::GET('/room/{name}/my-wish-list','\App\Api\V1\RoomController@getOwnWishList');
 
     Route::POST('/room/invites');
     Route::POST('/room');
@@ -32,6 +32,3 @@ Route::middleware(['api', 'api.auth'])->group(function () {
 
     Route::DELETE('/user/{roomName}/invites');
 });
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});

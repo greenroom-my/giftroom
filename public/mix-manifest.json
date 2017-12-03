@@ -1,11 +1,5 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/service-worker.js": "/service-worker.js",
-    "/css/FontAwesome.otf": "/css/FontAwesome.otf",
-    "/css/fontawesome-webfont.eot": "/css/fontawesome-webfont.eot",
-    "/css/fontawesome-webfont.svg": "/css/fontawesome-webfont.svg",
-    "/css/fontawesome-webfont.ttf": "/css/fontawesome-webfont.ttf",
-    "/css/fontawesome-webfont.woff": "/css/fontawesome-webfont.woff",
-    "/css/fontawesome-webfont.woff2": "/css/fontawesome-webfont.woff2"
+    "/service-worker.js": "/service-worker.js"
 }
