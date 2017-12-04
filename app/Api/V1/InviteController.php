@@ -27,8 +27,6 @@ class InviteController extends Controller
             return JsonResponse::validateError($developerMsg, $userMsg);
         }
 
-        $developerMsg = $userMsg = "Invitation sent successfully";
-
         DB::beginTransaction();
         try {
             $invites = InviteService::invite($request['emails'], $room->id);
@@ -36,11 +34,12 @@ class InviteController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-
             $developerMsg = $e->getMessage();
 
-            return JsonResponse::error($developerMsg, "Your invitation failed");
+            return JsonResponse::error($developerMsg, "Your invitation failed.");
         }
+
+        $developerMsg = $userMsg = "Invitation sent successfully.";
 
         return JsonResponse::success($developerMsg, $userMsg, $invites);
     }
@@ -62,24 +61,20 @@ class InviteController extends Controller
             return JsonResponse::validateError($developerMsg, $userMsg);
         }
 
-        $developerMsg = $userMsg = "Invitation sent successfully";
-
         DB::beginTransaction();
         try {
-            $invites = InviteService::uninvited($request['emails'], $room->id);
+            $invites = InviteService::uninvited($request['email'], $room);
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-
             $developerMsg = $e->getMessage();
 
-            return JsonResponse::error($developerMsg, "Your invitation failed");
+            return JsonResponse::error($developerMsg, "Uninvited user failed.");
         }
 
-        return JsonResponse::success($developerMsg, $userMsg, $invites);
+        $developerMsg = $userMsg = "Uninvited user successfully.";
 
-        // remove from invites
-        // then remove from user_room
+        return JsonResponse::success($developerMsg, $userMsg, $invites);
     }
 }
