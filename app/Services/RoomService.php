@@ -40,7 +40,7 @@ class RoomService
      */
     public static function create($attributes, $user)
     {
-        $room = self::store($attributes, $user);
+        $room = self::store($attributes, $user->id);
 
         self::attachUserInARoom($user, $room->id);
 
