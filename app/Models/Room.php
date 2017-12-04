@@ -9,8 +9,7 @@ class Room extends Model
 {
     protected $fillable = [
         'name',
-        'room_name',
-        'room_description',
+        'description',
         'budget',
         'event_day',
         'created_by',

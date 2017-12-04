@@ -20,7 +20,7 @@ Route::middleware(['api', 'api.auth'])->group(function () {
     Route::GET('/room/{name}/my-wish-list', 'WishListController@getOwnWishList');
 
     Route::POST('/room/invites', 'RoomController@roomInvited');
-    Route::POST('/room', 'RoomController@createRoom');
+    Route::POST('/room', 'RoomController@store');
     Route::POST('/room/add-friend', 'RoomController@addFriend');
     Route::POST('/room/{name}/my-wish-list');
 
