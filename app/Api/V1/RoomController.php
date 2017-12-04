@@ -136,10 +136,9 @@ class RoomController
             return JsonResponse::validateError($developerMsg, $userMsg);
         }
 
-        $user = $request->user();
-
         try {
-            RoomService::create($request->all(), $user->id);
+
+            $room = RoomService::create($request->all(), $request->user()->id);
 
             $developerMsg = "Room is created";
             $userMsg = "Your room is created";
