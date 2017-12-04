@@ -20,15 +20,16 @@ class ApiAuthentication
      *
      * @param  \Illuminate\Http\Request $request
      * @param  \Closure $next
-     * @param  string|null $guard
      * @return mixed
+     * @internal param null|string $guard
      */
     public function handle($request, \Closure $next)
     {
         // mei you gei http user id
         if (empty($_SERVER['HTTP_USER_ID'])) {
 
-            $developerMsg = 'Headers did\'not have user id';
+            $developerMsg = "Headers did't not have user id";
+
             return JsonResponse::error($developerMsg, 'error', 401);
         }
 
@@ -40,7 +41,7 @@ class ApiAuthentication
             return JsonResponse::error('error', 'error', 404);
         }
 
-        $request->merge(['user' => $user ]);
+        $request->merge(['user' => $user]);
 
         $request->setUserResolver(function () use ($user) {
             return $user;
