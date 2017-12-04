@@ -39,8 +39,8 @@
 
         data() {
             return {
-                email: '',
-                password: ''
+                email: 'vin@greenroom.com.my',
+                password: '111'
             }
         },
 
@@ -72,6 +72,7 @@
                 }).then(function(res) {
                     if(res.data.code === 200) {
                         VueEvent.user = res.data.data;
+                        VueEvent.room = res.data.data.room;
                         if(Array.isArray(VueEvent.user.rooms) && VueEvent.user.rooms.length === 0)
                             this.$router.push('/first-time');
                         else
