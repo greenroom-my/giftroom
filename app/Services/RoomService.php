@@ -42,7 +42,7 @@ class RoomService
     {
         $room = self::store($attributes, $user->id);
 
-        $user->rooms()->attach($room->id, ['join_at' => new Carbon()]);
+        self::attachUserInARoom($user, $room->id);
 
         return $room->fresh();
     }
@@ -79,6 +79,15 @@ class RoomService
     {
         return Room::findOrFail($attributes['id'])
             ->update($attributes);
+    }
+
+    /**
+     * @param $user
+     * @param $roomId
+     */
+    public static function attachUserInARoom($user, $roomId)
+    {
+        $user->rooms()->attach($roomId, ['join_at' => new Carbon()]);
     }
 
 }
