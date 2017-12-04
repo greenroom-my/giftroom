@@ -3,7 +3,9 @@ export default class API {
         this.basePath = 'http://127.0.0.1:8000/api/';
         this.endpoints = {
             authLogin: 'user/login',
-            authRegister: 'user/register'
+            authRegister: 'user/register',
+            roomCreate: 'room',
+            roomJoin: 'room/join'
         }
     }
 

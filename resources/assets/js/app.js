@@ -12,7 +12,8 @@ require('./bootstrap');
 window.Vue = new Vue;
 window.VueEvent = new Vue({
     data: {
-        user: null
+        user: null,
+        room: null
     }
 });
 
@@ -41,9 +42,18 @@ const router = new VueRouter({
             component: require('./views/FirstTimeView.vue')
         },
         {
+            path: '/room-create',
+            component: require('./views/RoomCreateView.vue')
+        },
+        {
             path: '/room-home',
             component: require('./views/RoomHomeView.vue')
+        },
+        {
+            path: '/room-invite',
+            component: require('./views/RoomInviteView.vue')
         }
+
     ]
 });
 

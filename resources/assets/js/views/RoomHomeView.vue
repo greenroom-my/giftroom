@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-10 offset-1 col-sm-6 offset-sm-3">
-                <h1>My Room for {{userName}}</h1>
+                <h4>{{roomName}}</h4>
             </div>
         </div>
     </div>
@@ -20,7 +20,7 @@
         },
         data() {
             return {
-                userName: VueEvent.user.name
+                roomName: VueEvent.room.name
             }
         }
     }
