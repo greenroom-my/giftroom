@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Monster
- * Date: 02/12/2017
- * Time: 7:02 PM
- */
 
 namespace App\API\V1;
-
 
 use App\Classes\JsonResponse;
 use App\Models\Invite;
