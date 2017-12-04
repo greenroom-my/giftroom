@@ -26,13 +26,13 @@ class ApiAuthentication
     public function handle($request, \Closure $next)
     {
         // mei you gei http user id
-        if (empty($_SERVER['HTTP_USERID'])) {
+        if (empty($_SERVER['HTTP_USER_ID'])) {
 
             $developerMsg = 'Headers did\'not have user id';
             return JsonResponse::error($developerMsg, 'error', 401);
         }
 
-        $userId = $_SERVER['HTTP_USERID'];
+        $userId = $_SERVER['HTTP_USER_ID'];
         // zhao bu dao user
         try {
             $user = User::findOrFail($userId);
