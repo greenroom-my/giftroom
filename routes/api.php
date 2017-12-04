@@ -19,14 +19,16 @@ Route::middleware(['api', 'api.auth'])->group(function () {
     Route::GET('/room/{name}/matches', 'RoomController@getRoomMatches');
     Route::GET('/room/{name}/my-wish-list', 'WishListController@getOwnWishList');
 
-    Route::POST('/room/invites', 'RoomController@roomInvited');
+    Route::POST('/room/{name}/invites', 'InviteController@invite');
+    Route::DELETE('/room/{name}/invites', 'InviteController@destroy');
+
     Route::POST('/room', 'RoomController@store');
-    Route::POST('/room/add-friend', 'RoomController@addFriend');
+    // Route::POST('/room/add-friend', 'RoomController@addFriend');
     Route::POST('/room/{name}/my-wish-list');
 
     Route::PATCH('/room');
     Route::PATCH('/room/join');
     Route::PATCH('/room/{name}/my-wish-list');
 
-    Route::DELETE('/user/{roomName}/invites');
+    Route::DELETE('/user/{name}/invites');
 });
