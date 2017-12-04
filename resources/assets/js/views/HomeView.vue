@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    import API from '../classes/api';
+    import API from '../classes/Api';
     let api = new API;
 
     export default {
@@ -72,9 +72,11 @@
                 }).then(function(res) {
                     if(res.data.code === 200) {
                         VueEvent.user = res.data.data;
-                        this.$router.push('/room-home');
+                        if(Array.isArray(VueEvent.user.rooms) && VueEvent.user.rooms.length === 0)
+                            this.$router.push('/first-time');
+                        else
+                            this.$router.push('/room-home');
                     }
-
                 }.bind(this)).catch(function(err) {
                     this.$popup({
                         message         : err.response.data.userMessage,
