@@ -1,0 +1,76 @@
+.slideout-menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 256px;
+  height: 100vh;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  z-index: 0;
+  display: none;
+  background-color: $brand-primary;
+  color: white;
+
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 5rem 0;
+
+    li {
+      line-height: 4rem;
+      border-bottom: 1px solid rgba(255,255,255, 0.2);
+      padding: 0 1rem;
+      margin-top: 0 !important;
+      text-align: left;
+      color: #fff;
+      font-size: 1rem;;
+
+      i {
+        min-width: 25px;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .room-switch {
+    position: fixed;
+    bottom: 0;
+    padding: 10px 10px;
+    background-color: #e4779c;
+    width: 256px;
+    font-size: 0.8rem;
+    text-align: center;
+    font-weight: 300;
+  }
+}
+
+  .slideout-menu-left {
+    left: 0;
+  }
+
+  .slideout-menu-right {
+    right: 0;
+  }
+
+  .slideout-panel {
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+    min-height: 100vh;
+    background-color: $body-bg;
+    box-shadow: -1px 0 0px 0px #fffefe;
+  }
+
+  .slideout-open,
+  .slideout-open body,
+  .slideout-open .slideout-panel {
+    overflow: hidden;
+  }
+
+  .slideout-open .slideout-menu {
+    display: block;
+  }

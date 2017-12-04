@@ -5,11 +5,20 @@ export default class API {
             authLogin: 'user/login',
             authRegister: 'user/register',
             roomCreate: 'room',
-            roomJoin: 'room/join'
+            roomJoin: 'room/join',
+            roomInfo: 'room/{name}',
+            roomInvite: 'room/{name}/invites'
         }
     }
 
-    getEndpointURL(key) {
-        return this.basePath + this.endpoints[key];
+    getEndpointURL(key, params = null) {
+        let url = this.basePath + this.endpoints[key];
+        if (params && Array.isArray(params))
+            for (let param of params) {
+                let key = Object.keys(param)[0];
+                let searchString = `{${key}}`;
+                url = url.replace(searchString, param[key]);
+            }
+        return url;
     }
 }

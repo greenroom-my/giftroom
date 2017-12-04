@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueUp from 'vueup'
+import Slideout from 'vue-slideout'
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -52,6 +53,10 @@ const router = new VueRouter({
         {
             path: '/room-invite',
             component: require('./views/RoomInviteView.vue')
+        },
+        {
+            path: '/wish-list',
+            component: require('./views/RoomInviteView.vue')
         }
 
     ]
@@ -59,6 +64,9 @@ const router = new VueRouter({
 
 const app = new Vue({
     router: router,
+    components: {
+        Slideout
+    },
     data: {
         navbar: {
             logo: true,
@@ -72,6 +80,12 @@ const app = new Vue({
             navbar.logo = data.logo;
             navbar.menu = data.menu;
         });
+    },
+    methods: {
+        closeMenu(route) {
+            this.$children[0].slideout.close();
+            router.push(route);
+        }
     }
 }).$mount('#app');
 

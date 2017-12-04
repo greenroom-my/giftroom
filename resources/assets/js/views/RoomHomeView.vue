@@ -25,10 +25,16 @@
                     </div>
                 </div>
                 <ul class="room-member-list">
-                    <li class="mb-1 disabled btn btn-sm btn-outline-dark no-border-radius btn-block">Vin Lim &nbsp; <i class="fa fa-gift text-muted"></i> </li>
-                    <li class="mb-1 disabled btn btn-sm btn-outline-dark no-border-radius btn-block">Lim Beng Hai &nbsp; <i class="fa fa-gift text-muted"></i> </li>
-                    <li class="mb-1 disabled btn btn-sm btn-outline-dark no-border-radius btn-block">Tan Kooi Choo &nbsp; <i class="fa fa-gift text-muted"></i> </li>
-                    <li class="mb-1 disabled btn btn-sm btn-outline-dark no-border-radius btn-block">Lim Wei Qi &nbsp; <i class="fa fa-gift text-muted"></i> </li>
+                    <li v-for="member in members"
+                        class="mb-1">
+                        <i class="fa fa-check text-muted"></i> <i class="fa fa-gift text-muted"></i> &nbsp;
+                        {{member.name}}
+                    </li>
+                    <li v-for="invite in invites"
+                        class="mb-1">
+                        <i class="fa fa-envelope text-muted"></i> &nbsp;
+                        {{invite.email}}
+                    </li>
                 </ul>
             </div>
         </div>
@@ -36,6 +42,9 @@
 </template>
 
 <script>
+    import API from '../classes/Api';
+    let api = new API;
+
     export default {
         mounted() {
             if (VueBus.user)
@@ -43,13 +52,39 @@
                     logo: true,
                     menu: true
                 });
+
+            this.room();
         },
         data() {
             return {
                 name: VueBus.room.name,
                 description: VueBus.room.description,
                 budget: VueBus.room.budget,
-                eventDate: VueBus.room.event_day
+                eventDate: VueBus.room.event_day,
+                members: [],
+                invites: []
+            }
+        },
+        methods: {
+            room() {
+                axios.get(api.getEndpointURL('roomInfo', [{
+                    'name': this.name
+                }]), {
+                    headers: {'user_id': VueBus.user.id},
+                }).then(function (res) {
+                    if (res.data.code === 200) {
+                        VueBus.room = res.data.data;
+                        this.members = res.data.data.members;
+                        this.invites = res.data.data.invites;
+                    }
+                }.bind(this)).catch(function (err) {
+                    this.$popup({
+                        message: err.response.data.userMessage,
+                        color: '#fff',
+                        backgroundColor: '#f48fb1',
+                        delay: 10
+                    });
+                }.bind(this));
             }
         }
     }

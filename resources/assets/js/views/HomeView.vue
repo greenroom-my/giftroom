@@ -36,14 +36,12 @@
                 menu: false
             });
         },
-
         data() {
             return {
                 email: 'vin@greenroom.com.my',
                 password: '111111'
             }
         },
-
         methods: {
             login() {
                 if(this.email === '') {

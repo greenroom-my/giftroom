@@ -43,8 +43,26 @@
   list-style: none;
   padding-left: 0;
 
-  .btn {
+  li {
+    color: #343a40;
     font-size: 0.8rem !important;
+    border: 1px solid $dark;
+    padding: 0.5rem;
+
+    &.btn-outline-danger {
+      color: $brand-danger !important;
+      background-color: transparent;
+      background-image: none;
+      border-color: $brand-danger !important;
+
+      &:active {
+        color: #fff !important;
+
+        i {
+          color: #fff !important;
+        }
+      }
+    }
   }
 }
 
