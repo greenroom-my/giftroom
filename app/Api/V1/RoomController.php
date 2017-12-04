@@ -120,7 +120,7 @@ class RoomController
     public function store(Request $request)
     {
         if ($request->has('name')) {
-            $sanitizeName = sanatize($request->name);
+            $sanitizeName = sanitize($request->name);
             $request->replace(['name' => $sanitizeName]);
         }
 
