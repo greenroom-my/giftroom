@@ -15,7 +15,7 @@
 <script>
     export default {
         mounted() {
-            VueEvent.$emit('pageChange', {
+            VueBus.$emit('pageChange', {
                 logo: true,
                 menu: false
             });

@@ -18,7 +18,7 @@
                     <label>Password</label>
                     <input type="password" class="form-control"  placeholder="Password" v-model="password">
                 </div>
-                <button @click="login" class="btn btn-block btn-primary">Login</button>
+                <button @click="login" class="btn btn-block btn-primary text-white">Login</button>
                 <router-link to="/register" tag="button" class="btn btn-block btn-default">Register</router-link>
             </div>
         </div>
@@ -31,7 +31,7 @@
 
     export default {
         mounted() {
-            VueEvent.$emit('pageChange', {
+            VueBus.$emit('pageChange', {
                 logo: false,
                 menu: false
             });
@@ -40,7 +40,7 @@
         data() {
             return {
                 email: 'vin@greenroom.com.my',
-                password: '111'
+                password: '111111'
             }
         },
 
@@ -71,12 +71,16 @@
                     password: this.password
                 }).then(function(res) {
                     if(res.data.code === 200) {
-                        VueEvent.user = res.data.data;
-                        VueEvent.room = res.data.data.room;
-                        if(Array.isArray(VueEvent.user.rooms) && VueEvent.user.rooms.length === 0)
+                        VueBus.user = res.data.data;
+
+                        if(Array.isArray(VueBus.user.rooms) && VueBus.user.rooms.length === 0) {
                             this.$router.push('/first-time');
-                        else
+                        } else {
+                            if(!VueBus.room)
+                                VueBus.room = res.data.data.rooms[0];
+
                             this.$router.push('/room-home');
+                        }
                     }
                 }.bind(this)).catch(function(err) {
                     this.$popup({

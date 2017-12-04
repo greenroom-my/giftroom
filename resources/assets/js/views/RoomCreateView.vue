@@ -32,8 +32,8 @@
 
     export default {
         mounted() {
-            if (VueEvent.user)
-                VueEvent.$emit('pageChange', {
+            if (VueBus.user)
+                VueBus.$emit('pageChange', {
                     logo: true,
                     menu: true
                 });
@@ -75,10 +75,10 @@
                     budget: this.budget,
                     date: this.date
                 }, {
-                    headers: {'user_id': VueEvent.user.id},
+                    headers: {'user_id': VueBus.user.id},
                 }).then(function(res) {
                     if(res.data.code === 200) {
-                        VueEvent.room = res.data.data;
+                        VueBus.room = res.data.data;
                         this.$router.push('/room-invite');
                     }
                 }.bind(this)).catch(function(err) {

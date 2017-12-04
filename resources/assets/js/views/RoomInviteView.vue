@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-10 offset-1 col-sm-6 offset-sm-3">
-                <h3>Invite Friends</h3>
+                <h4 class="text-primary">Invite Friends</h4>
                 <div class="form-group mt-3">
                     <input class="form-control" placeholder="Email" v-model="email">
                     <button class="btn btn-primary btn-block mt-1">Add</button>
@@ -19,8 +19,8 @@
 
     export default {
         mounted() {
-            if (VueEvent.user)
-                VueEvent.$emit('pageChange', {
+            if (VueBus.user)
+                VueBus.$emit('pageChange', {
                     logo: true,
                     menu: true
                 });
@@ -52,10 +52,10 @@
                     budget: this.budget,
                     date: this.date
                 }, {
-                    headers: {'user_id': VueEvent.user.id},
+                    headers: {'user_id': VueBus.user.id},
                 }).then(function(res) {
                     if(res.data.code === 200) {
-                        VueEvent.room = res.data.data;
+                        VueBus.room = res.data.data;
                         this.$router.push('/invite-friends');
                     }
                 }.bind(this)).catch(function(err) {

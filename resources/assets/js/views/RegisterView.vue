@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-10 offset-1 col-sm-6 offset-sm-3">
-                <h2>Register</h2>
+                <h4 class="text-primary">Register</h4>
 
                 <div class="form-group">
                     <label>Name</label>
@@ -25,7 +25,7 @@
                            type="password" class="form-control">
                 </div>
                 <button @click="register"
-                        class="btn btn-block btn-primary">Register</button>
+                        class="btn btn-block btn-primary text-white">Register</button>
             </div>
         </div>
     </div>
@@ -37,7 +37,7 @@
 
     export default {
         mounted() {
-            VueEvent.$emit('pageChange', {
+            VueBus.$emit('pageChange', {
                 logo: true,
                 menu: false
             });
@@ -100,8 +100,8 @@
                     password_confirmation: this.password
                 }).then(function(res) {
                     if(res.data.code === 200) {
-                        VueEvent.user = res.data.data;
-                        if(Array.isArray(VueEvent.user.rooms) && VueEvent.user.rooms.length === 0)
+                        VueBus.user = res.data.data;
+                        if(Array.isArray(VueBus.user.rooms) && VueBus.user.rooms.length === 0)
                             this.$router.push('/first-time');
                         else
                             this.$router.push('/room-home');

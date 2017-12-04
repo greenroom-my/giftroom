@@ -10,7 +10,7 @@ import VueUp from 'vueup'
 
 require('./bootstrap');
 window.Vue = new Vue;
-window.VueEvent = new Vue({
+window.VueBus = new Vue({
     data: {
         user: null,
         room: null
@@ -64,11 +64,11 @@ const app = new Vue({
             logo: true,
             menu: true
         },
-        event: window.VueEvent
+        event: window.VueBus
     },
     created() {
         let navbar = this.navbar;
-        window.VueEvent.$on('pageChange', function(data) {
+        window.VueBus.$on('pageChange', function(data) {
             navbar.logo = data.logo;
             navbar.menu = data.menu;
         });
