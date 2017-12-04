@@ -39,3 +39,12 @@
   font-size: 2rem !important;
 }
 
+.room-member-list {
+  list-style: none;
+  padding-left: 0;
+
+  .btn {
+    font-size: 0.8rem !important;
+  }
+}
+
