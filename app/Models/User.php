@@ -30,6 +30,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $with = [
+        'rooms'
+    ];
+
     public function rooms()
     {
         return $this->belongsToMany(Room::class, 'user_rooms', 'user_id', 'room_id');
