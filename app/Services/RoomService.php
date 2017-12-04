@@ -6,7 +6,11 @@ use App\Models\Room;
 
 class RoomService
 {
-    public static function randomizer($roomId)
+    /**
+     * Randomize all friends in a room become array of matches
+     * @return array
+     */
+    public static function randomizeMatches($roomId)
     {
         $friendIds = Room::where('id', $roomId)->first()->friends->pluck('id');
         $newArray = $pickedArray = [];
