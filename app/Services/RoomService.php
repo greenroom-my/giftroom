@@ -44,7 +44,7 @@ class RoomService
 
         $user->rooms()->attach($room->id, ['join_at' => new Carbon()]);
 
-        return $room;
+        return $room->fresh();
     }
 
 
