@@ -126,7 +126,14 @@ class RoomController
      */
     public function store(Request $request)
     {
-        $validator = $this->makeValidation(self::CREATE_ROOM, $request);
+        if ($request->has('name')) {
+            $sanitizeName = sanatize($request->name);
+            $request->replace(['name' => $sanitizeName]);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|unique:rooms,name',
+        ]);
 
         if ($validator->fails()) {
 
@@ -137,9 +144,8 @@ class RoomController
         }
 
         $user = $request->user();
-
         try {
-            RoomService::create($request->all(), $user->id);
+            $room = RoomService::create($request->all(), $user);
 
             $developerMsg = "Room is created";
             $userMsg = "Your room is created";
@@ -209,33 +215,19 @@ class RoomController
     protected function makeValidation($action, Request $request)
     {
         switch ($action) {
-            case $action == 1 :
+            case 1:
                 return $validatedData = Validator::make($request->all(), [
                     'room_id' => 'required|int',
                     'email'   => 'required|string',
                 ]);
                 break;
 
-            case $action == 2:
-                return $validatedData = Validator::make($request->all(), [
-                    'name'   => 'required|string',
-                ]);
-                break;
-
-            case $action == 3:
-
-                break;
-
-            case $action == 4:
+            case 4:
                 return $validatedData = Validator::make($request->all(), [
                     'user_id' => 'required|int',
                     'room_id' => 'required|int'
                 ]);
                 break;
-
-
-            default:
-
         }
     }
 }
