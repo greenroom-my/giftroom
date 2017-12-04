@@ -68,7 +68,8 @@ class RoomService
      */
     public static function find($roomId)
     {
-        return Room::find($roomId);
+        return Room::with('members','invites')
+            ->find($roomId);
     }
 
     /**
@@ -85,9 +86,9 @@ class RoomService
      * @param $user
      * @param $roomId
      */
-    public static function attachUserInARoom($user, $roomId)
+    public static function attachUser(Room $room, $userId)
     {
-        $user->rooms()->attach($roomId, ['join_at' => new Carbon()]);
+        $room->members()->attach($userId);
     }
 
 }

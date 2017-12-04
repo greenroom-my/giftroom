@@ -24,19 +24,21 @@ class RoomController
      */
     public function index(Request $request, Room $room)
     {
-        $userMsg = $developerMsg = 'Room does not exists';
+        try {
+            $userMsg = $developerMsg = 'Room does not exists';
 
-        $user = $request->user();
-        if($room->user_id != $user->id){
-            return JsonResponse::error($developerMsg, $userMsg, 404);
+            $room->load('members');
+            $room->load('invites');
+
+            $userMsg = $developerMsg = 'Retrieved room successfully';
+
+            return JsonResponse::success($developerMsg, $userMsg, $room);
+        } catch (\Exception $e) {
+            $developerMsg = $e->getMessage();
+            $userMsg = 'Error has occurred';
+
+            return JsonResponse::error($developerMsg, $userMsg, $room);
         }
-
-        $room->load('friends');
-        $room->load('invites');
-
-        $developerMsg = $userMsg = 'Retrieved room successfully';
-
-        return JsonResponse::success($developerMsg, $userMsg, $room);
     }
 
     /**

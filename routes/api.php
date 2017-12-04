@@ -15,20 +15,13 @@ Route::POST('/user/register', 'Auth\RegisterController@register');
 Route::POST('/user/login', 'Auth\LoginController@login');
 
 Route::middleware(['api', 'api.auth'])->group(function () {
-    Route::GET('/room/{name}', 'RoomController@index');
-    Route::GET('/room/{name}/matches', 'RoomController@getRoomMatches');
-    Route::GET('/room/{name}/my-wish-list', 'WishListController@getOwnWishList');
-
-    Route::POST('/room/{name}/invites', 'InviteController@invite');
-    Route::DELETE('/room/{name}/invites', 'InviteController@destroy');
-
     Route::POST('/room', 'RoomController@store');
-    // Route::POST('/room/add-friend', 'RoomController@addFriend');
+    Route::GET('/room/{room}', 'RoomController@index');
+
+    Route::POST('/room/{room}/invites', 'InviteController@invite');
+    Route::DELETE('/room/{room}/invites', 'InviteController@destroy');
+
+    Route::GET('/room/{room}/my-wish-list', 'WishListController@getOwnWishList');
+    Route::PATCH('/room/{room}/my-wish-list');
     Route::POST('/room/{name}/my-wish-list');
-
-    Route::PATCH('/room');
-    Route::PATCH('/room/join');
-    Route::PATCH('/room/{name}/my-wish-list');
-
-    Route::DELETE('/user/{name}/invites');
 });

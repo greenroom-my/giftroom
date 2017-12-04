@@ -2,10 +2,13 @@
 
 namespace App\API\V1;
 
+use App\Classes\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Services\InviteService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class InviteController extends Controller
 {
@@ -13,11 +16,12 @@ class InviteController extends Controller
     /**
      * @param Request $request
      * @param Room $room
+     * @return \Illuminate\Http\JsonResponse
      */
     public function invite(Request $request, Room $room)
     {
         $validator = Validator::make($request->all(), [
-            'emails' => 'required|array',
+            'email' => 'required|email',
         ]);
 
         if ($validator->fails()) {
@@ -27,26 +31,22 @@ class InviteController extends Controller
             return JsonResponse::validateError($developerMsg, $userMsg);
         }
 
-        DB::beginTransaction();
         try {
-            $invites = InviteService::invite($request['emails'], $room->id);
+            $invites = InviteService::invite($request->email, $room);
+            $developerMsg = $userMsg = "Invitation sent successfully.";
 
-            DB::commit();
+            return JsonResponse::success($developerMsg, $userMsg, $invites);
         } catch (\Exception $e) {
-            DB::rollBack();
             $developerMsg = $e->getMessage();
 
-            return JsonResponse::error($developerMsg, "Your invitation failed.");
+            return JsonResponse::error($developerMsg, "Invitation failed");
         }
-
-        $developerMsg = $userMsg = "Invitation sent successfully.";
-
-        return JsonResponse::success($developerMsg, $userMsg, $invites);
     }
 
     /**
      * @param Request $request
      * @param Room $room
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Room $room)
     {
@@ -61,20 +61,15 @@ class InviteController extends Controller
             return JsonResponse::validateError($developerMsg, $userMsg);
         }
 
-        DB::beginTransaction();
         try {
-            $invites = InviteService::uninvited($request['email'], $room);
+            $invites = InviteService::uninvite($request->email, $room);
+            $developerMsg = $userMsg = "Uninvited user successfully.";
 
-            DB::commit();
+            return JsonResponse::success($developerMsg, $userMsg, $invites);
         } catch (\Exception $e) {
-            DB::rollBack();
             $developerMsg = $e->getMessage();
 
-            return JsonResponse::error($developerMsg, "Uninvited user failed.");
+            return JsonResponse::error($developerMsg, "Uninvite user failed");
         }
-
-        $developerMsg = $userMsg = "Uninvited user successfully.";
-
-        return JsonResponse::success($developerMsg, $userMsg, $invites);
     }
 }

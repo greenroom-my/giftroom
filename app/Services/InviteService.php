@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Invite;
+use App\Models\Room;
 use App\Models\User;
 
 class InviteService
@@ -14,28 +15,20 @@ class InviteService
      * @param $roomId
      * @return array
      */
-    public static function invite(array $emails, $roomId)
+    public static function invite($email, Room $room)
     {
-        $invites = [];
-        foreach ($emails as $email) {
-            // check is user exist
-            $user = User::where('email', $email)->first();
-            if ($user) {
-                RoomService::attachUserInARoom($user->id, $roomId);
-                // update user details as invite so that it can be attach
-                $invite = $user;
-            } else {
-                // create invites if the email does not exist in the system
-                $invite = Invite::create([
-                    'email'   => $email,
-                    'room_id' => $roomId
-                ]);
-            }
-
-            $invites[] = $invite->fresh();
+        $user = User::where('email', $email)->first();
+        if ($user) {
+            RoomService::attachUser($room, $user->id);
+            $response = $user;
+        } else {
+            $response = Invite::create([
+                'email' => $email,
+                'room_id' => $room->id
+            ]);
         }
 
-        return $invites;
+        return $response;
     }
 
     /**
@@ -45,20 +38,16 @@ class InviteService
      * @param $room
      * @throws \Exception
      */
-    public static function uninvited($email, $room)
+    public static function uninvite($email, $room)
     {
-        // if the user does not register in the whole event
-        // then the entry should be still in invites table instead of user_rooms
         $invite = Invite::where('email', $email)->where('room_id', $room->id)->first();
 
-        // if invites then will delete the entry
-        // if not in invites mean user have already register and the entry will be in user_room instead
-        // then will need to detach from there
-        if ($invite) $invite->delete();
+        if ($invite)
+            return $invite->delete();
         else {
             $user = User::where('email', $email)->first();
-            if($user)
-                $user->rooms()->detach($room->id);
+            if ($user)
+                return $user->rooms()->detach($room->id);
         }
     }
 }

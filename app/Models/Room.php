@@ -21,7 +21,7 @@ class Room extends Model
         return $this->hasOne(User::class, 'id', 'created_by');
     }
 
-    public function friends()
+    public function members()
     {
         return $this->belongsToMany(User::class, 'user_rooms', 'room_id', 'user_id');
     }
