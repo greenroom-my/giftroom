@@ -2,10 +2,11 @@
 .form-group label { font-size: 0.7rem; }
 .bg-light { background-color: $brand-primary !important; }
 .navbar-brand { font-family: 'Sacramento',Helvetica; }
-.alert-dark {
-  color: #fff;
-  background-color: #333;
-  border-color: transparent;
+.form-control {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid $brand-primary;
+  border-radius: 0;
 }
 
 // Custom Classes

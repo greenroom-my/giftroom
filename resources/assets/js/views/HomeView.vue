@@ -26,6 +26,9 @@
 </template>
 
 <script>
+    import API from '../classes/api';
+    let api = new API;
+
     export default {
         mounted() {
             VueEvent.$emit('pageChange', {
@@ -36,42 +39,51 @@
 
         data() {
             return {
-                email: 'vin@greenroom.com.my',
-                password: '111'
+                email: '',
+                password: ''
             }
         },
 
         methods: {
             login() {
                 if(this.email === '') {
-                    alert('No email');
+                    this.$popup({
+                        message         : 'Email is required',
+                        color           : '#fff',
+                        backgroundColor : '#f48fb1',
+                        delay           : 6
+                    });
                     return false;
                 }
 
                 if(this.password === '') {
-                    alert('No password');
+                    this.$popup({
+                        message         : 'Password is required',
+                        color           : '#fff',
+                        backgroundColor : '#f48fb1',
+                        delay           : 6
+                    });
                     return false;
                 }
-                
-                axios.post('http://127.0.0.1:8000/api/user/login', {
+
+                axios.post(api.getEndpointURL('authLogin'), {
                     email: this.email,
                     password: this.password
                 }).then(function(res) {
-                    if(res.data.code)
+                    if(res.data.code === 200) {
+                        VueEvent.user = res.data.data;
                         this.$router.push('/room-home');
+                    }
 
                 }.bind(this)).catch(function(err) {
-                    console.error(err);
                     this.$popup({
                         message         : err.response.data.userMessage,
                         color           : '#fff',
                         backgroundColor : '#f48fb1',
                         delay           : 10
-                    })
+                    });
                 }.bind(this));
             }
         }
-
-
     }
 </script>

@@ -10,7 +10,11 @@ import VueUp from 'vueup'
 
 require('./bootstrap');
 window.Vue = new Vue;
-window.VueEvent = new Vue({});
+window.VueEvent = new Vue({
+    data: {
+        user: null
+    }
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

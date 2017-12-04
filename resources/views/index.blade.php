@@ -7,7 +7,7 @@
 
 <body>
 <div id="app">
-    <giftroom-navbar :logo="navbar.logo"></giftroom-navbar>
+    <giftroom-navbar :menu="navbar.menu" :logo="navbar.logo"></giftroom-navbar>
 
     <router-view></router-view>
     <vue-up></vue-up>
