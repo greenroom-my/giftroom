@@ -40,7 +40,7 @@ class RoomService
      */
     public static function create($attributes, $user)
     {
-        $room = self::store($attributes, $user);
+        $room = self::store($attributes, $user->id);
 
         $user->rooms()->attach($room->id, ['join_at' => new Carbon()]);
 
