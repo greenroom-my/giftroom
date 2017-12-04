@@ -15,7 +15,7 @@ Route::POST('/user/register', 'Auth\RegisterController@register');
 Route::POST('/user/login', 'Auth\LoginController@login');
 
 Route::middleware(['api', 'api.auth'])->group(function () {
-    Route::GET('/room/{name}', 'RoomController@getRoom');
+    Route::GET('/room/{name}', 'RoomController@index');
     Route::GET('/room/{name}/matches', 'RoomController@getRoomMatches');
     Route::GET('/room/{name}/my-wish-list', 'WishListController@getOwnWishList');
 

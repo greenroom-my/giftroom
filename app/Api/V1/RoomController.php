@@ -19,24 +19,24 @@ class RoomController
 
     /**
      * @param Request $request
-     * @param $name
+     * @param Room $room
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getRoom(Request $request, $name)
+    public function index(Request $request, Room $room)
     {
-        $room = Room::where('room_name', $name)->first();
+        $userMsg = $developerMsg = 'Room does not exists';
 
-        $developerMsg = 'Room not exists';
-        $userMsg = 'Room is don\'t not exists';
-
-        if (isset($room)) {
-            $developerMsg = 'Success';
-            $userMsg = 'Room is exists';
-
-            return JsonResponse::success($developerMsg, $userMsg, $room);
+        $user = $request->user();
+        if($room->user_id != $user->id){
+            return JsonResponse::error($developerMsg, $userMsg, 404);
         }
 
-        return JsonResponse::error($developerMsg, $userMsg);
+        $room->load('friends');
+        $room->load('invites');
+
+        $developerMsg = $userMsg = 'Retrieved room successfully';
+
+        return JsonResponse::success($developerMsg, $userMsg, $room);
     }
 
     /**
