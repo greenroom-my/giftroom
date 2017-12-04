@@ -37,6 +37,7 @@ class RegisterController extends Controller
         try {
 
             if ($user = $this->create($request->all())) {
+                $user = $user->load('rooms');
 
                 $developerMsg = "Success";
                 $userMsg = "Registration successfully";
