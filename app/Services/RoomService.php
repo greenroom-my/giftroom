@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Room;
+use Carbon\Carbon;
 
 class RoomService
 {
@@ -13,7 +14,9 @@ class RoomService
     public static function randomizeMatches($roomId)
     {
         $friendIds = Room::where('id', $roomId)->first()->friends->pluck('id');
+
         $newArray = $pickedArray = [];
+
         for ($x = 0; $x < count($friendIds); $x++) {
             $temp = $friendIds;
             array_splice($temp, $x, 1);
@@ -30,9 +33,29 @@ class RoomService
     /**
      * $attributes that passed to this method should include
      * name and room_name
-     * @return $room object
+     *
+     * @param $attributes
+     * @param $user
+     * @return mixed $room object
      */
-    public static function create($attributes, $userId)
+    public static function create($attributes, $user)
+    {
+        $room = self::store($attributes, $user);
+
+        $user->rooms()->attach($room->id, ['join_at' => new Carbon()]);
+
+        return $room;
+    }
+
+
+    /**
+     * store room detail in room db
+     *
+     * @param $attributes
+     * @param $userId
+     * @return mixed
+     */
+    public static function store($attributes, $userId)
     {
         $attributes['created_by'] = $userId;
 
