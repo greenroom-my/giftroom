@@ -21,7 +21,7 @@ Route::middleware(['api', 'api.auth'])->group(function () {
     Route::POST('/room/{room}/invites', 'InviteController@invite');
     Route::DELETE('/room/{room}/invites', 'InviteController@destroy');
 
-    Route::GET('/room/{room}/my-wish-list', 'WishListController@getOwnWishList');
-    Route::PATCH('/room/{room}/my-wish-list');
-    Route::POST('/room/{name}/my-wish-list');
+    Route::GET('/room/{room}/my-wish-list', 'WishListController@index');
+    Route::POST('/room/{name}/my-wish-list', 'WishListController@store');
+    Route::PATCH('/room/{room}/my-wish-list', 'WishListController@edit');
 });

@@ -42,7 +42,7 @@ class RoomService
     {
         $room = self::store($attributes, $user->id);
 
-        self::attachUserInARoom($user, $room->id);
+        self::attachUser($user, $room->id);
 
         return $room->fresh();
     }
@@ -83,8 +83,8 @@ class RoomService
     }
 
     /**
-     * @param $user
-     * @param $roomId
+     * @param Room $room
+     * @param $userId
      */
     public static function attachUser(Room $room, $userId)
     {
