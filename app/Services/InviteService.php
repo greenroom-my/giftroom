@@ -36,18 +36,23 @@ class InviteService
      *
      * @param $email
      * @param $room
+     * @return string
      * @throws \Exception
      */
-    public static function uninvite($email, $room)
+    public static function uninvite($email, $room, User $requestor)
     {
+        $type = 'member';
         $invite = Invite::where('email', $email)->where('room_id', $room->id)->first();
 
-        if ($invite)
-            return $invite->delete();
-        else {
+        if ($invite) {
+            $type = 'invite';
+            $invite->delete();
+        } else {
             $user = User::where('email', $email)->first();
-            if ($user)
-                return $user->rooms()->detach($room->id);
+            if ($user && $user->id !== $requestor->id)
+                $user->rooms()->detach($room->id);
         }
+
+        return $type;
     }
 }

@@ -47,13 +47,13 @@ class InviteController extends Controller
      * @param Room $room
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, Room $room)
+    public function uninvite(Request $request, Room $room)
     {
         try {
             if(!$request->has('email'))
                 throw new \Exception('Email is required');
 
-            $invites = InviteService::uninvite($request->email, $room);
+            $invites = InviteService::uninvite($request->email, $room, $request->user());
             $developerMsg = $userMsg = "Uninvited user successfully.";
 
             return JsonResponse::success($developerMsg, $userMsg, $invites);
