@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Services\InviteService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class InviteController extends Controller
