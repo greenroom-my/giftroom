@@ -92,20 +92,19 @@ class WishListController extends Controller
         DB::beginTransaction();
         try {
             $user = $request->user();
-            // todo add update method
+            $wishList = WishlistService::updateMany($request->all(), $user->id, $room->id);
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
             $developerMsg = $e->getMessage();
-            $userMsg = 'Wish List save failed';
+            $userMsg = 'Wish List update failed';
 
             return JsonResponse::error($developerMsg, $userMsg);
         }
 
-        $developerMsg = $userMsg = 'Wish list saved successfully';
+        $developerMsg = $userMsg = 'Wish list updated successfully';
 
-        // todo return response with updated wish list
-        //  return JsonResponse::success($developerMsg, $userMsg, $wishList);
+        return JsonResponse::success($developerMsg, $userMsg, $wishList);
     }
 }

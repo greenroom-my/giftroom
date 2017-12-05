@@ -62,7 +62,7 @@ class WishlistService
      * @param $attributes
      * @param $userId
      * @param $roomId
-     * @return true
+     * @return array
      */
     public static function createMany($attributes, $userId, $roomId)
     {
@@ -105,12 +105,21 @@ class WishlistService
     /**
      * Arrays in an Array
      * Pass updated data to this method to update the whole wishlist object
-     * @return true/false
+     *
+     * @param $attributes
+     * @param $userId
+     * @param $roomId
+     * @return array
      */
-    public static function updateMany($attributes)
+    public static function updateMany($attributes, $userId, $roomId)
     {
-        return Wishlist::findOrFail($attributes['id'])
-            ->update($attributes);
+        // remove the previous wish list
+        Wishlist::where(['room_id', '=', $roomId], ['user_id', '=', $userId])->delete();
+
+        // recreate the wish list
+        $updatedWishList = self::createMany($attributes, $userId, $roomId);
+
+        return $updatedWishList;
     }
 
 }
