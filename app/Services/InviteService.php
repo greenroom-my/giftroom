@@ -11,8 +11,8 @@ class InviteService
     /**
      * Pass an array of email that user want to invite
      *
-     * @param array $emails
-     * @param $roomId
+     * @param $email
+     * @param Room $room
      * @return array
      */
     public static function invite($email, Room $room)
@@ -23,7 +23,7 @@ class InviteService
             $response = $user;
         } else {
             $response = Invite::create([
-                'email' => $email,
+                'email'   => $email,
                 'room_id' => $room->id
             ]);
         }
