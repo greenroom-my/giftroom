@@ -7,6 +7,7 @@ use App\Models\Invite;
 use App\Models\Room;
 use App\Models\UserRoom;
 use App\Services\RoomService;
+use App\Services\WishlistService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,18 +26,15 @@ class RoomController
     public function index(Request $request, Room $room)
     {
         try {
-            $userMsg = $developerMsg = 'Room does not exists';
-
             $room->load('members');
             $room->load('invites');
+            $room['wishlists'] = WishlistService::find($room, $request->user());
 
             $userMsg = $developerMsg = 'Retrieved room successfully';
-
             return JsonResponse::success($developerMsg, $userMsg, $room);
         } catch (\Exception $e) {
             $developerMsg = $e->getMessage();
             $userMsg = 'Error has occurred';
-
             return JsonResponse::error($developerMsg, $userMsg, $room);
         }
     }

@@ -7,7 +7,8 @@ export default class API {
             roomCreate: 'room',
             roomJoin: 'room/join',
             roomInfo: 'room/{name}',
-            roomInvite: 'room/{name}/invites'
+            roomInvite: 'room/{name}/invites',
+            wishList: 'room/{name}/my-wish-list',
         }
     }
 

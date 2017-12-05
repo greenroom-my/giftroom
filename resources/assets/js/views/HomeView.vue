@@ -74,8 +74,10 @@
                         if(Array.isArray(VueBus.user.rooms) && VueBus.user.rooms.length === 0) {
                             this.$router.push('/first-time');
                         } else {
-                            if(!VueBus.room)
+                            if(!VueBus.room) {
+                                VueBus.rooms = res.data.data.rooms;
                                 VueBus.room = res.data.data.rooms[0];
+                            }
 
                             this.$router.push('/room-home');
                         }

@@ -2,44 +2,65 @@
 
 namespace App\Services;
 
+use App\Models\Room;
+use App\Models\User;
 use App\Models\Wishlist;
+use Illuminate\Support\Facades\DB;
 
+/**
+ * Class WishlistService
+ * @package App\Services
+ */
 class WishlistService
 {
-
     /**
-     * max wish list per user
-     * @var int
-     * */
-    public $maxWishList;
-
-    /**
-     * WishlistService constructor.
+     * Pass room_id to this method to retrieve the wishlist of the user in this room
+     * @return wishlist object
      */
-    public function __construct()
+    public static function find($room, $user)
     {
-        $this->maxWishList = 3;
+        return Wishlist::where('room_id', $room->id)
+            ->where('user_id', $user->id)
+            ->get();
     }
 
     /**
-     * setter for wish list per user
-     * @param $total
-     * @return $this
+     * Arrays in an array
+     * $attributes that passed to this method could contain more than one wishlist which include
+     * description
+     * @param $attributes
+     * @param User $user
+     * @param Room $room
+     * @return array
+     * @throws \Exception
+     * @internal param $userId
+     * @internal param $roomId
      */
-    public function setWishListTotal($total)
+    public static function create($attributes, User $user, Room $room)
     {
-        $this->maxWishList = $total;
+        DB::beginTransaction();
+        try {
+            if (count($attributes) > 3)
+                throw new \Exception('Too many wishlist');
 
-        return $this;
-    }
+            if (count($attributes) < 3)
+                throw new \Exception('Too litte wishlist');
 
-    /**
-     * getter for total wish list number
-     * @return int
-     */
-    public function getWishListTotal()
-    {
-        return $this->maxWishList;
+            self::destroy($user);
+
+
+            $wishlists = [];
+            foreach ($attributes as $attribute) {
+                $attribute['room_id'] = $room->id;
+                $attribute['user_id'] = $user->id;
+                array_push($wishlists, self::store($attribute));
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -48,78 +69,17 @@ class WishlistService
      * description
      * @return $room object
      */
-    public static function create($attributes, $userId)
+    public static function store($attributes)
     {
-        $attributes['user_id'] = $userId;
-
         return Wishlist::create($attributes);
     }
 
-    /**
-     * Arrays in an array
-     * $attributes that passed to this method could contain more than one wishlist which include
-     * description
-     * @param $attributes
-     * @param $userId
-     * @param $roomId
-     * @return array
-     */
-    public static function createMany($attributes, $userId, $roomId)
-    {
-        $wishList = [];
-        foreach ($attributes as $key => $attribute) {
-            // if the wish list is more then 3 will not be saved
-            // minus 1 is because index is start from 0
-            if ($key >= (self::getWishListTotal() - 1)) continue;
-
-            $attribute['room_id'] = $roomId;
-            $attribute['user_id'] = $userId;
-
-            $savedWishList = Wishlist::create($attribute);
-            $wishList[] = $savedWishList->fresh();
-        }
-
-        return $wishList;
-    }
 
     /**
-     * Pass room_id to this method to retrieve the wishlist of the user in this room
-     * @return wishlist object
+     * @param $user
      */
-    public static function find($roomId, $userId)
+    public static function destroy(User $user)
     {
-        return Wishlist::where(['room_id', '=', $roomId], ['user_id', '=', $userId])->get();
+        return Wishlist::where('user_id',$user->id)->delete();
     }
-
-    /**
-     * Array
-     * Pass updated data to this method to update the whole wishlist object
-     * @return true/false
-     */
-    public static function update($attributes)
-    {
-        return Wishlist::findOrFail($attributes['id'])
-            ->update($attributes);
-    }
-
-    /**
-     * Arrays in an Array
-     * Pass updated data to this method to update the whole wishlist object
-     *
-     * @param $attributes
-     * @param $userId
-     * @param $roomId
-     * @return array
-     */
-    public static function updateMany($attributes, $userId, $roomId)
-    {
-        // remove the previous wish list
-        Wishlist::where(['room_id', '=', $roomId], ['user_id', '=', $userId])->delete();
-
-        // recreate the wish list
-        $updatedWishList = self::createMany($attributes, $userId, $roomId);
-
-        return $updatedWishList;
-    }
-
 }
