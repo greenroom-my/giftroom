@@ -56,9 +56,8 @@ const router = new VueRouter({
         },
         {
             path: '/wish-list',
-            component: require('./views/RoomInviteView.vue')
+            component: require('./views/WishListView.vue')
         }
-
     ]
 });
 

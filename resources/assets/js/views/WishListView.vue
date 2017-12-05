@@ -2,24 +2,15 @@
     <div class="container">
         <div class="row">
             <div class="col-10 offset-1 col-sm-6 offset-sm-3">
-                <h3>Create Room</h3>
-                <div class="form-group mt-3">
-                    <input class="form-control" placeholder="Room Name" v-model="name">
+                <h3>My Wish List</h3>
+                <div class="form-group">
+                    <textarea class="form-control wish-list-item" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" rows="5" placeholder="Description" v-model="description">
-                    </textarea>
+                    <textarea class="form-control wish-list-item" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Gift Budget</label>
-                    <input type="number" class="form-control" placeholder="Amount" v-model="budget">
-                </div>
-                <div class="form-group">
-                    <label>Party Date</label>
-                    <input type="date" class="form-control" placeholder="The Date" v-model="date">
-                </div>
-                <div class="form-group">
-                    <button @click="create" class="btn btn-block btn-primary">Create</button>
+                    <textarea class="form-control wish-list-item" rows="3"></textarea>
                 </div>
             </div>
         </div>
@@ -37,6 +28,8 @@
                     logo: true,
                     menu: true
                 });
+
+
         },
         data() {
             return {

@@ -59,7 +59,7 @@
                         }]), {
                             email: this.email.toLowerCase()
                         }, {
-                            headers: {'user_id': VueBus.user.id}
+                            headers: {'Authorization': VueBus.user.id},
                         }).then(function (res) {
                         if (res.data.code === 200) {
                             if (res.data.data.name)
@@ -79,22 +79,25 @@
             },
 
             uninvite(email) {
-                console.log(axios);
                 if (confirm(`Remove ${email} from room?`)) {
                     axios.delete(
                         api.getEndpointURL('roomInvite', [{
                             'name': VueBus.room.name
                         }]), {
-                            email: email
-                        }, {
-                            headers: {'user_id': VueBus.user.id}
+                            headers: {'Authorization': VueBus.user.id},
+                            params: {
+                                email: email
+                            }
                         }).then(function (res) {
                         if (res.data.code === 200) {
-                            console.log(res.data);
-//                            if(res.data.data.name)
-//                                VueBus.room.members.push(res.data.data);
-//                            else
-//                                VueBus.room.invites.push(res.data.data);
+                            if (res.data.data === 'invite')
+                                this.invites = VueBus.room.invites.filter(function (obj) {
+                                    return obj.email !== email;
+                                });
+                            if (res.data.data === 'member')
+                                this.members = VueBus.room.members.filter(function (obj) {
+                                    return obj.email !== email;
+                                });
                         }
                     }.bind(this)).catch(function (err) {
                         this.$popup({

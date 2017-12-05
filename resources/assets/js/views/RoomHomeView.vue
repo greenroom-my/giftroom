@@ -70,7 +70,7 @@
                 axios.get(api.getEndpointURL('roomInfo', [{
                     'name': this.name
                 }]), {
-                    headers: {'user_id': VueBus.user.id},
+                    headers: {'Authorization': VueBus.user.id},
                 }).then(function (res) {
                     if (res.data.code === 200) {
                         VueBus.room = res.data.data;
