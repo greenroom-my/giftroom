@@ -76,7 +76,7 @@
                     name: this.name,
                     description: this.description,
                     budget: this.budget,
-                    date: this.date
+                    event_day: this.date
                 }, {
                     headers: {'Authorization': VueBus.user.id},
                 }).then(function(res) {

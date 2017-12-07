@@ -4,32 +4,11 @@ namespace App\Services;
 
 use App\Models\Room;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 
 class RoomService
 {
-    /**
-     * Randomize all friends in a room become array of matches
-     * @return array
-     */
-    public static function randomizeMatches($roomId)
-    {
-        $friendIds = Room::where('id', $roomId)->first()->friends->pluck('id');
-
-        $newArray = $pickedArray = [];
-
-        for ($x = 0; $x < count($friendIds); $x++) {
-            $temp = $friendIds;
-            array_splice($temp, $x, 1);
-            $temp = array_diff($temp, $pickedArray);
-            $data = array_splice($temp, random_int(0, count($temp) - 1), 1);
-            $data = array_shift($data);
-            $newArray[ $friendIds["$x"] ] = $data;
-            $pickedArray[] = $data;
-        }
-
-        return $newArray;
-    }
-
     /**
      * $attributes that passed to this method should include
      * name and room_name
@@ -40,13 +19,19 @@ class RoomService
      */
     public static function create($attributes, $user)
     {
-        $room = self::store($attributes, $user->id);
+        DB::beginTransaction();
+        try {
+            $room = self::store($attributes, $user->id);
+            self::attachUser($room, $user->id);
+            self::joinRoom($room, $user->id);
 
-        self::attachUser($user, $room->id);
-
-        return $room->fresh();
+            DB::commit();
+            return $room->fresh();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
+        }
     }
-
 
     /**
      * store room detail in room db
@@ -85,10 +70,46 @@ class RoomService
     /**
      * @param Room $room
      * @param $userId
+     * @return Room
      */
     public static function attachUser(Room $room, $userId)
     {
         $room->members()->attach($userId);
+        return $room;
     }
 
+    public static function joinRoom(Room $room, $userId)
+    {
+        $room->members()->updateExistingPivot($userId, ['join_at' => Carbon::now()]);
+    }
+
+    public static function userInRoom(Room $room, $user)
+    {
+        return $room->whereHas('members', function($query) use ($user) {
+            $query->where('users.id', $user->id);
+        })->first();
+    }
+
+    /**
+     * Randomize all friends in a room become array of matches
+     * @return array
+     */
+    public static function randomizeMatches($roomId)
+    {
+        $friendIds = Room::where('id', $roomId)->first()->friends->pluck('id');
+
+        $newArray = $pickedArray = [];
+
+        for ($x = 0; $x < count($friendIds); $x++) {
+            $temp = $friendIds;
+            array_splice($temp, $x, 1);
+            $temp = array_diff($temp, $pickedArray);
+            $data = array_splice($temp, random_int(0, count($temp) - 1), 1);
+            $data = array_shift($data);
+            $newArray[ $friendIds["$x"] ] = $data;
+            $pickedArray[] = $data;
+        }
+
+        return $newArray;
+    }
 }
