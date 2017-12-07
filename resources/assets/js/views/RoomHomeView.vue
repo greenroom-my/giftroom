@@ -31,9 +31,13 @@
                            v-bind:class="{
                                 'text-muted': !member.pivot.join_at,
                                 'text-success': member.pivot.join_at
-                           }"></i> <i
-                            class="fa fa-gift text-muted"></i> &nbsp;
-                        {{member.name}}
+                           }"></i>
+                        <i class="fa fa-gift"
+                           v-bind:class="{
+                                'text-muted': member.wishlists.length == 0,
+                                'text-success': member.wishlists.length > 0
+                           }"></i>
+                        &nbsp; {{member.name}}
                     </li>
                     <li v-for="invite in invites"
                         class="mb-1">
