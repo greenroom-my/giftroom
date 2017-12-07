@@ -10,7 +10,7 @@
             <div>
                 <router-link
                         v-if="logo == true"
-                        to="/" tag="a" class="navbar-brand">
+                        to="/room-home" tag="a" class="navbar-brand">
                     Giftroom
                 </router-link>
                 <div v-else></div>

@@ -36,6 +36,9 @@
 
     export default {
         mounted() {
+            if(!VueBus.room)
+                this.$router.push('/');
+
             if (VueBus.user)
                 VueBus.$emit('pageChange', {
                     logo: true,

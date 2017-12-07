@@ -15,6 +15,9 @@
 <script>
     export default {
         mounted() {
+            if(!VueBus.user)
+                this.$router.push('/');
+
             VueBus.$emit('pageChange', {
                 logo: true,
                 menu: false
