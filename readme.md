@@ -1,6 +1,6 @@
 ## About Giftroom
 
-helps you organise your gift exchange party including invites, matches & wishlist.
+Giftroom helps you organise your gift exchange party including invites, matches & wishlist.
 
 ## Contributors
 
