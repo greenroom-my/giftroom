@@ -27,7 +27,12 @@
                 <ul class="room-member-list">
                     <li v-for="member in members"
                         class="mb-1">
-                        <i class="fa fa-check text-muted"></i> <i class="fa fa-gift text-muted"></i> &nbsp;
+                        <i class="fa fa-check"
+                           v-bind:class="{
+                                'text-muted': !member.pivot.join_at,
+                                'text-success': member.pivot.join_at
+                           }"></i> <i
+                            class="fa fa-gift text-muted"></i> &nbsp;
                         {{member.name}}
                     </li>
                     <li v-for="invite in invites"

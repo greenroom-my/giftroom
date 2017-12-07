@@ -26,7 +26,9 @@ class RoomController
     public function index(Request $request, Room $room)
     {
         try {
-            $room->load('members');
+            $room->load(['members' => function ($query) {
+                $query->orderBy('join_at', 'desc');
+            }]);
             $room->load('invites');
             $room['wishlists'] = WishlistService::find($room, $request->user());
 

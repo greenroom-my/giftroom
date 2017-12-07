@@ -23,7 +23,8 @@ class Room extends Model
 
     public function members()
     {
-        return $this->belongsToMany(User::class, 'user_rooms', 'room_id', 'user_id');
+        return $this->belongsToMany(User::class, 'user_rooms', 'room_id', 'user_id')
+            ->withPivot('join_at');
     }
 
     public function wishlists()

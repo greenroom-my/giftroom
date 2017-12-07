@@ -36,7 +36,9 @@ class User extends Authenticatable
 
     public function rooms()
     {
-        return $this->belongsToMany(Room::class, 'user_rooms', 'user_id', 'room_id');
+        return $this->belongsToMany(Room::class, 'user_rooms', 'user_id', 'room_id')
+            ->wherePivot('join_at','!=',null)
+            ->withPivot('join_at');
     }
 
     public function wishlists()
