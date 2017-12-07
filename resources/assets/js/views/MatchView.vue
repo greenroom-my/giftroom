@@ -32,6 +32,10 @@
     let api = new API;
 
     export default {
+        created() {
+            if(!VueBus.room)
+                this.$router.push('/');
+        },
         mounted() {
 
         },

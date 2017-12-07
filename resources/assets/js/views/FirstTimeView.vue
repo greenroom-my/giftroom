@@ -18,16 +18,16 @@
     let api = new API;
 
     export default {
-        mounted() {
+        created() {
             if (!VueBus.user)
                 this.$router.push('/');
-
+        },
+        mounted() {
             VueBus.$emit('pageChange', {
                 logo: true,
                 menu: false
             });
         },
-
         data() {
             return {
                 roomId: ''

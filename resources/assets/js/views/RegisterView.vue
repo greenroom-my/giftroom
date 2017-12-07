@@ -50,7 +50,6 @@
                 passwordConfirm: ''
             }
         },
-
         methods: {
             register() {
                 if(this.name === '') {

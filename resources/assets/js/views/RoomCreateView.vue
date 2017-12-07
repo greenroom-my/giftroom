@@ -31,10 +31,11 @@
     let api = new API;
 
     export default {
-        mounted() {
+        created() {
             if(!VueBus.user)
                 this.$router.push('/');
-
+        },
+        mounted() {
             if (VueBus.user)
                 VueBus.$emit('pageChange', {
                     logo: true,
@@ -49,7 +50,6 @@
                 date: ''
             }
         },
-
         methods: {
             create() {
                 if(this.name === '') {

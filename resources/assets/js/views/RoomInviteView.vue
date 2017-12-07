@@ -30,14 +30,14 @@
 
 <script>
     import API from '../classes/Api';
-
     let api = new API;
 
     export default {
-        mounted() {
+        created() {
             if(!VueBus.room)
                 this.$router.push('/');
-
+        },
+        mounted() {
             if (VueBus.user)
                 VueBus.$emit('pageChange', {
                     logo: true,
