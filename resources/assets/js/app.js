@@ -57,6 +57,10 @@ const router = new VueRouter({
         {
             path: '/wish-list',
             component: require('./views/WishListView.vue')
+        },
+        {
+            path: '/match',
+            component: require('./views/MatchView.vue')
         }
     ]
 });
@@ -71,7 +75,15 @@ const app = new Vue({
             logo: true,
             menu: true
         },
-        event: window.VueBus
+        event: window.VueBus,
+    },
+    computed: {
+      roomName() {
+          if(this.event.room)
+              return this.event.room.name;
+          else
+              return "";
+      }
     },
     created() {
         let navbar = this.navbar;
