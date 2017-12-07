@@ -87,14 +87,14 @@ class RoomController
     {
         try {
             if (RoomService::userInRoom($room, $request->user())) {
+                $room = RoomService::joinRoom($room, $request->user());
                 $developerMsg = 'User already in the room';
                 $userMsg = "The user already exists the room";
                 return JsonResponse::success($developerMsg, $userMsg, $room);
             } else {
-                $room = RoomService::attachUser($room, $request->user()->id);
-                $developerMsg = "Add member successful";
-                $userMsg = "You member is added in this room";
-                return JsonResponse::success($developerMsg, $userMsg, $room);
+                $developerMsg = "User not invited";
+                $userMsg = "You are not invited to join this room";
+                return JsonResponse::error($developerMsg, $userMsg);
             }
         } catch (\Exception $e) {
             $developerMsg = $e->getMessage();

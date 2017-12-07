@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Room;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
@@ -23,7 +24,7 @@ class RoomService
         try {
             $room = self::store($attributes, $user->id);
             self::attachUser($room, $user->id);
-            self::joinRoom($room, $user->id);
+            self::joinRoom($room, $user);
 
             DB::commit();
             return $room->fresh();
@@ -53,7 +54,7 @@ class RoomService
      */
     public static function find($roomId)
     {
-        return Room::with('members','invites')
+        return Room::with('members', 'invites')
             ->find($roomId);
     }
 
@@ -78,14 +79,15 @@ class RoomService
         return $room;
     }
 
-    public static function joinRoom(Room $room, $userId)
+    public static function joinRoom(Room $room, User $user)
     {
-        $room->members()->updateExistingPivot($userId, ['join_at' => Carbon::now()]);
+        $room->members()->updateExistingPivot($user->id, ['join_at' => Carbon::now()]);
+        return $room;
     }
 
-    public static function userInRoom(Room $room, $user)
+    public static function userInRoom(Room $room, User $user)
     {
-        return $room->whereHas('members', function($query) use ($user) {
+        return $room->whereHas('members', function ($query) use ($user) {
             $query->where('users.id', $user->id);
         })->first();
     }
@@ -106,7 +108,7 @@ class RoomService
             $temp = array_diff($temp, $pickedArray);
             $data = array_splice($temp, random_int(0, count($temp) - 1), 1);
             $data = array_shift($data);
-            $newArray[ $friendIds["$x"] ] = $data;
+            $newArray[$friendIds["$x"]] = $data;
             $pickedArray[] = $data;
         }
 
