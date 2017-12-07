@@ -38,8 +38,8 @@
         },
         data() {
             return {
-                email: 'vin@greenroom.com.my',
-                password: '111111'
+                email: '',
+                password: ''
             }
         },
         methods: {
