@@ -69,7 +69,9 @@
                             else
                                 VueBus.room.invites.push(res.data.data);
                         }
+                        this.email = '';
                     }.bind(this)).catch(function (err) {
+                        this.email = '';
                         this.$popup({
                             message: err.response.data.userMessage,
                             color: '#fff',
