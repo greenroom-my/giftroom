@@ -25,5 +25,9 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta property="og:url"                content="https://giftrooms.party" />
+<meta property="og:title"              content="Giftroom" />
+<meta property="og:description"        content="Giftroom helps you organise your gift exchange party including invites, matches & wishlist." />
+<meta property="og:image"              content="/images/giftroom-cover.jpg" />
 
 <title>{{ config('app.name', 'Giftroom') }}</title>
