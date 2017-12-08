@@ -28,6 +28,6 @@
 <meta property="og:url"                content="https://giftrooms.party" />
 <meta property="og:title"              content="Giftroom" />
 <meta property="og:description"        content="Giftroom helps you organise your gift exchange party including invites, matches & wishlist." />
-<meta property="og:image"              content="https://giftroom.party/images/giftroom-cover.jpg" />
+<meta property="og:image"              content="https://giftroom.party/images/giftroom-cover.png" />
 
 <title>{{ config('app.name', 'Giftroom') }}</title>
