@@ -6,6 +6,7 @@ use App\Classes\JsonResponse;
 use App\Models\Invite;
 use App\Models\Room;
 use App\Models\UserRoom;
+use App\Services\MatchService;
 use App\Services\RoomService;
 use App\Services\WishlistService;
 use Illuminate\Http\Request;
@@ -108,79 +109,23 @@ class RoomController
         }
     }
 
-//    /**
-//     * @param Request $request
-//     * @param $name
-//     * @return \Illuminate\Http\JsonResponse
-//     */
-//    public function getRoomMatches(Request $request, $name)
-//    {
-//
-//        $room = Room::with(['matches' => function ($q) {
-//            $q->with('santa', 'target');
-//        }])->where('room_name', $name)->first();
-//
-//        if ( !isset($room)) {
-//            $developerMsg = 'Room not exists';
-//            $userMsg = 'Room is don\'t not exits';
-//
-//            return JsonResponse::error($developerMsg, $userMsg);
-//        }
-//
-//        if (isset($room->matches) && $room->matches->isNotEmpty()) {
-//
-//            $data = $room->matches;
-//            $developerMsg = 'Success';
-//            $userMsg = 'Matches is exists';
-//
-//            return JsonResponse::success($developerMsg, $userMsg, $data);
-//        }
-//
-//        $developerMsg = 'Matches not exists';
-//        $userMsg = 'The room have\'t have matches';
-//
-//        return JsonResponse::error($developerMsg, $userMsg);
-//
-//    }
+    public function match(Request $request, Room $room) {
+        try {
+            $user = $request->user();
+            $match = MatchService::find($room, $user);
+            $wishlist = MatchService::wishlist($room, $user);
+            $data = new \stdClass();
+            $data->match = $match;
+            $data->wishlist = $wishlist;
 
-//    /**
-//     * @param Request $request
-//     * @return \Illuminate\Http\JsonResponse
-//     */
-//    public function roomInvited(Request $request)
-//    {
-//        $validator = $this->makeValidation(self::INVITED, $request);
-//
-//        if ($validator->fails()) {
-//
-//            $developerMsg = "Validation error";
-//            $userMsg = $validator->errors();
-//
-//            return JsonResponse::validateError($developerMsg, $userMsg);
-//        }
-//
-//        $roomId = $request->room_id;
-//        $email = $request->email;
-//
-//        try {
-//            $invited = Invite::create([
-//                'room_id' => $roomId,
-//                'email'   => $email
-//            ]);
-//
-//            $developerMsg = "Invitation sent";
-//            $userMsg = "Send invitation success";
-//
-//            return JsonResponse::success($developerMsg, $userMsg, $invited);
-//
-//        } catch (\Exception $e) {
-//
-//            $developerMsg = $e->getMessage();
-//            $userMsg = "Your invitation failed";
-//
-//            return JsonResponse::error($developerMsg, $userMsg);
-//        }
-//    }
+            $userMsg = $developerMsg = 'Retrieved match successfully';
+            return JsonResponse::success($developerMsg, $userMsg, $data);
+        } catch (\Exception $e) {
+            $developerMsg = $e->getMessage();
+            $userMsg = 'Error has occurred';
+            return JsonResponse::error($developerMsg, $userMsg);
+        }
+    }
 
     protected function makeValidation($action, Request $request)
     {

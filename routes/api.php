@@ -24,4 +24,7 @@ Route::middleware(['api', 'api.auth'])->group(function () {
 
     Route::GET('/room/{room}/my-wish-list', 'WishListController@index');
     Route::POST('/room/{room}/my-wish-list', 'WishListController@store');
+
+    Route::GET('/room/{room}/my-match', 'RoomController@match');
 });
+

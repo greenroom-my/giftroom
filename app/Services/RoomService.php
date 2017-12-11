@@ -99,33 +99,4 @@ class RoomService
 //            $query->where('users.id', '=' , $user->id);
 //        })->first();
     }
-
-    /**
-     * Randomize all friends in a room become array of matches
-     * @return array
-     */
-    public static function randomizeMatches($roomId)
-    {
-        $friendIds = Room::where('id', $roomId)->first()->members->pluck('id')->toArray();
-
-        $matches = $pickedArray = [];
-
-        for ($x = 0; $x < count($friendIds); $x++) {
-            $temp = $friendIds;
-            array_splice($temp, $x, 1);
-            $temp = array_diff($temp, $pickedArray);
-            $data = array_splice($temp, random_int(0, count($temp) - 1), 1);
-            $data = array_shift($data);
-            $matches[$friendIds["$x"]] = $data;
-            $pickedArray[] = $data;
-        }
-
-        foreach($matches as $key => $value) {
-            Match::create([
-                'santa_id' => $key,
-                'target_id' => $value,
-                'room_id' => $roomId
-            ]);
-        }
-    }
 }

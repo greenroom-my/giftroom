@@ -10,6 +10,7 @@ export default class API {
             roomInvite: 'room/{name}/invites',
             roomJoin: 'room/{name}/join',
             wishList: 'room/{name}/my-wish-list',
+            match: 'room/{name}/my-match',
         }
     }
 

@@ -7,6 +7,11 @@ use App\Models\User;
 
 class UserService
 {
+    public static function find($userId)
+    {
+        return User::find($userId);
+    }
+
     /**
      * Pass user_id into this so you can retrieve list of rooms that the user are in
      *
