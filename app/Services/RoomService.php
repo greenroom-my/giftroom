@@ -87,9 +87,16 @@ class RoomService
 
     public static function userInRoom(Room $room, User $user)
     {
-        return $room->whereHas('members', function ($query) use ($user) {
-            $query->where('users.id', $user->id);
-        })->first();
+        $test = false;
+        foreach ($user->availableRooms as $userRoom) {
+            if ($userRoom->name == $room->name)
+                $test = $room;
+        }
+
+        return $test;
+//        $room = $room->whereHas('members', function ($query) use ($user) {
+//            $query->where('users.id', '=' , $user->id);
+//        })->first();
     }
 
     /**

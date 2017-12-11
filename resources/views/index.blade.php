@@ -13,10 +13,10 @@
                 <li @click="closeMenu('/room-home')" class="btn btn-primary btn-block"><i class="fa fa-home"></i> &nbsp; Home</li>
                 <li @click="closeMenu('/wish-list')" class="btn btn-primary btn-block"><i class="fa fa-tasks"></i> &nbsp; My Wish List</li>
                 <li @click="closeMenu('/match')" class="btn btn-primary btn-block"><i class="fa fa-user"></i> &nbsp; My Match</li>
-                <li @click="closeMenu('/')" class="btn btn-primary btn-block"><i class="fa fa-sign-out"></i> &nbsp; Log Out</li>
+                <li @click="logout" class="btn btn-primary btn-block"><i class="fa fa-sign-out"></i> &nbsp; Log Out</li>
             </ul>
 
-            <div class="room-switch">You are in <strong>@{{roomName}}</strong></div>
+            <div @click="closeMenu('/room-switch')" class="room-switch">You are in <strong>@{{roomName}}</strong></div>
         </nav>
         <main id="panel">
             <giftroom-navbar :menu="navbar.menu" :logo="navbar.logo"></giftroom-navbar>

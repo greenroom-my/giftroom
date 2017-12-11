@@ -82,6 +82,7 @@
                 }).then(function(res) {
                     if(res.data.code === 200) {
                         VueBus.room = res.data.data;
+                        VueBus.rooms.push(VueBus.room);
                         this.$router.push('/room-invite');
                     }
                 }.bind(this)).catch(function(err) {

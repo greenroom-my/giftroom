@@ -61,6 +61,10 @@ const router = new VueRouter({
         {
             path: '/match',
             component: require('./views/MatchView.vue')
+        },
+        {
+            path: '/room-switch',
+            component: require('./views/RoomSwitchView.vue')
         }
     ]
 });
@@ -96,6 +100,13 @@ const app = new Vue({
         closeMenu(route) {
             this.$children[0].slideout.close();
             router.push(route);
+        },
+
+        logout() {
+            this.closeMenu('/');
+            VueBus.rooms = null;
+            VueBus.room = null;
+            VueBus.user = null;
         }
     }
 }).$mount('#app');

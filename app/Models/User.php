@@ -41,6 +41,12 @@ class User extends Authenticatable
             ->withPivot('join_at');
     }
 
+    public function availableRooms()
+    {
+        return $this->belongsToMany(Room::class, 'user_rooms', 'user_id', 'room_id')
+            ->withPivot('join_at');
+    }
+
     public function wishlists()
     {
         return $this->hasMany(Wishlist::class, 'user_id', 'id');
