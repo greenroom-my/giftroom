@@ -105,7 +105,7 @@ class RoomService
      */
     public static function randomizeMatches($roomId)
     {
-        $friendIds = Room::where('id', $roomId)->first()->members->pluck('id');
+        $friendIds = Room::where('id', $roomId)->first()->members->pluck('id')->toArray();
 
         $newArray = $pickedArray = [];
 
