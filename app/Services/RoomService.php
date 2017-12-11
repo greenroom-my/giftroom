@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Match;
 use App\Models\Room;
 use App\Models\User;
 use Carbon\Carbon;
@@ -107,7 +108,7 @@ class RoomService
     {
         $friendIds = Room::where('id', $roomId)->first()->members->pluck('id')->toArray();
 
-        $newArray = $pickedArray = [];
+        $matches = $pickedArray = [];
 
         for ($x = 0; $x < count($friendIds); $x++) {
             $temp = $friendIds;
@@ -115,10 +116,16 @@ class RoomService
             $temp = array_diff($temp, $pickedArray);
             $data = array_splice($temp, random_int(0, count($temp) - 1), 1);
             $data = array_shift($data);
-            $newArray[$friendIds["$x"]] = $data;
+            $matches[$friendIds["$x"]] = $data;
             $pickedArray[] = $data;
         }
 
-        return $newArray;
+        foreach($matches as $key => $value) {
+            Match::create([
+                'santa_id' => $key,
+                'target_id' => $value,
+                'room_id' => $roomId
+            ]);
+        }
     }
 }
