@@ -79,13 +79,14 @@
                         }
                     }
                 }.bind(this)).catch(function (err) {
+                    this.loading = false;
                     this.error = true;
-                    this.$popup({
-                        message: err.response.data.userMessage,
-                        color: '#fff',
-                        backgroundColor: '#f48fb1',
-                        delay: 10
-                    });
+//                    this.$popup({
+//                        message: err.response.data.userMessage,
+//                        color: '#fff',
+//                        backgroundColor: '#f48fb1',
+//                        delay: 10
+//                    });
                 }.bind(this));
             },
         }
