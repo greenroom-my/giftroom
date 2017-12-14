@@ -31,7 +31,9 @@ class RoomController
                 'members' => function ($query) {
                     $query->orderBy('join_at', 'desc');
                 },
-                'members.wishlists'
+                'members.wishlists' => function ($query) use ($room) {
+                    $query->where('room_id', $room->id);
+                }
                 ]);
             $room->load('invites');
             $room['wishlists'] = WishlistService::find($room, $request->user());
