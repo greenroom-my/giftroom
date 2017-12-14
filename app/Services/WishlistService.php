@@ -46,7 +46,7 @@ class WishlistService
             if (count($attributes) < 3)
                 throw new \Exception('Too litte wishlist');
 
-            self::destroy($user);
+            self::destroy($room, $user);
 
 
             $wishlists = [];
@@ -78,8 +78,10 @@ class WishlistService
     /**
      * @param $user
      */
-    public static function destroy(User $user)
+    public static function destroy(Room $room, User $user)
     {
-        return Wishlist::where('user_id',$user->id)->delete();
+        return Wishlist::where('user_id',$user->id)
+            ->where('room_id', $room->id)
+            ->delete();
     }
 }
