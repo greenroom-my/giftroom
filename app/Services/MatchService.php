@@ -63,6 +63,8 @@ class MatchService
             $matches[$members["$x"]] = $data;
             $matchedArray[] = $data;
         }
+
+	return $matches;
     }
 
 //    /**
