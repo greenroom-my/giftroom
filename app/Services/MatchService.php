@@ -35,8 +35,9 @@ class MatchService
 
     public static function wishlist($room, $user) {
         $match = self::find($room, $user);
-        if ($match)
-            return $match->wishlists;
+        if ($match) {
+            return WishlistService::find($room, $match);
+        }
 
         return false;
     }
