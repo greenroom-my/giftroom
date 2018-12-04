@@ -13,7 +13,7 @@ class RoomInvite extends Mailable
     /**
      * @var
      */
-    public $guestName;
+    public $guestEmail;
     public $hostName;
     public $roomId;
 
@@ -22,9 +22,9 @@ class RoomInvite extends Mailable
      *
      * @param $name
      */
-    public function __construct($guestName, $hostName, $roomId)
+    public function __construct($guestEmail, $hostName, $roomId)
     {
-        $this->guestName = $guestName;
+        $this->guestEmail = $guestEmail;
         $this->hostName = $hostName;
         $this->roomId= $roomId;
     }
@@ -38,6 +38,6 @@ class RoomInvite extends Mailable
     {
         return $this->from('postmaster@giftroom.party', 'Giftroom')
             ->markdown('emails.room.invite')
-            ->subject('Hey! ' . $this->hostName . ' invited you to a party');
+            ->subject('Hey ' . $this->hostName . ', invited you to a party!');
     }
 }

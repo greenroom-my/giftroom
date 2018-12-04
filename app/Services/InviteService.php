@@ -67,9 +67,9 @@ class InviteService
      * @internal param $email
      * @internal param $room
      */
-    private static function email($guestName, $hostName, $roomId)
+    private static function email($guestEmail, $hostName, $roomId)
     {
-        $mail = new RoomInvite($guestName, $hostName, $roomId);
-        return Mail::to('vin.lim.yh@gmail.com')->queue($mail);
+        $mail = new RoomInvite($guestEmail, $hostName, $roomId);
+        return Mail::to($guestEmail)->queue($mail);
     }
 }
