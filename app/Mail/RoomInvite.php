@@ -38,6 +38,6 @@ class RoomInvite extends Mailable
     {
         return $this->from('postmaster@giftroom.party', 'Giftroom')
             ->markdown('emails.room.invite')
-            ->subject('Hey ' . $this->hostName . ', invited you to a party!');
+            ->subject('Hey, ' . $this->hostName . ' invited you to a party!');
     }
 }
