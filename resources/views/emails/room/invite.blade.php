@@ -1,5 +1,5 @@
 @component('mail::message')
-# Hey <span style="text-decoration: none;">{{$guestEmail}}</span>, you are invited!
+# Hey, looks like you are invited!
 
 A gift exchange party is happening, and <span style="font-weight: 800;">{{$hostName}}</span> has invited you! Just head on to Giftroom and to join the party with there following code.<br>
 <br>
