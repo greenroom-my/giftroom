@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Mail\RoomInvite;
 use App\Models\Invite;
 use App\Models\Room;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class InviteService
 {
@@ -23,10 +25,13 @@ class InviteService
             $response = $user;
         } else {
             $response = Invite::create([
-                'email'   => $email,
+                'email' => $email,
                 'room_id' => $room->id
             ]);
         }
+
+        if($room && $room->owner)
+            self::email($email, $room->owner->name, $room->name);
 
         return $response;
     }
@@ -54,5 +59,17 @@ class InviteService
         }
 
         return $type;
+    }
+
+    /**
+     * Email to user upon invitation
+     * @return string
+     * @internal param $email
+     * @internal param $room
+     */
+    private static function email($guestName, $hostName, $roomId)
+    {
+        $mail = new RoomInvite($guestName, $hostName, $roomId);
+        return Mail::to('vin.lim.yh@gmail.com')->queue($mail);
     }
 }
