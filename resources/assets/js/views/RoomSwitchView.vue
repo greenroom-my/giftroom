@@ -70,6 +70,7 @@
                 });
                 if(room.length > 0)
                     VueBus.room = room[0];
+                    localStorage.setItem('room', JSON.stringify(room[0]));
 
                 this.$router.push('/room-home');
             }
