@@ -12,10 +12,10 @@ import Slideout from 'vue-slideout'
 require('./bootstrap');
 window.Vue = new Vue;
 window.VueBus = new Vue({
-    data: {
-        user: null,
-        room: null
-    }
+  data: {
+    user: null,
+    room: null
+  }
 });
 
 /**
@@ -29,89 +29,96 @@ Vue.use(VueUp);
 Vue.component('giftroom-navbar', require('./components/Navbar.vue'));
 
 const router = new VueRouter({
-    routes: [
-        {
-            path: '/',
-            component: require('./views/HomeView.vue')
-        },
-        {
-            path: '/register',
-            component: require('./views/RegisterView.vue')
-        },
-        {
-            path: '/first-time',
-            component: require('./views/FirstTimeView.vue')
-        },
-        {
-            path: '/room-create',
-            component: require('./views/RoomCreateView.vue')
-        },
-        {
-            path: '/room-home',
-            component: require('./views/RoomHomeView.vue')
-        },
-        {
-            path: '/room-invite',
-            component: require('./views/RoomInviteView.vue')
-        },
-        {
-            path: '/wish-list',
-            component: require('./views/WishListView.vue')
-        },
-        {
-            path: '/match',
-            component: require('./views/MatchView.vue')
-        },
-        {
-            path: '/room-switch',
-            component: require('./views/RoomSwitchView.vue')
-        }
-    ]
+  routes: [
+    {
+      path: '/',
+      component: require('./views/HomeView.vue')
+    },
+    {
+      path: '/register',
+      component: require('./views/RegisterView.vue')
+    },
+    {
+      path: '/first-time',
+      component: require('./views/FirstTimeView.vue')
+    },
+    {
+      path: '/room-create',
+      component: require('./views/RoomCreateView.vue')
+    },
+    {
+      path: '/room-home',
+      component: require('./views/RoomHomeView.vue')
+    },
+    {
+      path: '/room-invite',
+      component: require('./views/RoomInviteView.vue')
+    },
+    {
+      path: '/wish-list',
+      component: require('./views/WishListView.vue')
+    },
+    {
+      path: '/match',
+      component: require('./views/MatchView.vue')
+    },
+    {
+      path: '/room-switch',
+      component: require('./views/RoomSwitchView.vue')
+    }
+  ]
 });
 
 const app = new Vue({
-    router: router,
-    components: {
-        Slideout
+  router: router,
+  components: {
+    Slideout
+  },
+  data: {
+    navbar: {
+      logo: true,
+      menu: true
     },
-    data: {
-        navbar: {
-            logo: true,
-            menu: true
-        },
-        event: window.VueBus,
-    },
-    computed: {
-      roomName() {
-          if(this.event.room)
-              return this.event.room.name;
-          else
-              return "";
-      }
-    },
-    created() {
-        let navbar = this.navbar;
-        window.VueBus.$on('pageChange', function(data) {
-            navbar.logo = data.logo;
-            navbar.menu = data.menu;
-        });
-    },
-    methods: {
-        closeMenu(route) {
-            this.$children[0].slideout.close();
-            router.push(route);
-        },
-
-        logout() {
-            this.closeMenu('/');
-            VueBus.rooms = null;
-            VueBus.room = null;
-            VueBus.user = null;
-        }
+    event: window.VueBus,
+  },
+  computed: {
+    roomName() {
+      if (this.event.room)
+        return this.event.room.name;
+      else
+        return "";
     }
+  },
+  created() {
+    let navbar = this.navbar;
+    window.VueBus.$on('pageChange', function (data) {
+      navbar.logo = data.logo;
+      navbar.menu = data.menu;
+    });
+  },
+  methods: {
+    closeMenu(route) {
+      this.$children[0].slideout.close();
+      router.push(route);
+    },
+
+    logout() {
+      this.closeMenu('/');
+      try {
+        localStorage.removeItem('user');
+        localStorage.removeItem('room');
+        localStorage.removeItem('rooms');
+      } catch (e) {
+        throw e;
+      }
+      VueBus.rooms = null;
+      VueBus.room = null;
+      VueBus.user = null;
+    }
+  }
 }).$mount('#app');
 
-if ( 'serviceWorker' in navigator ) {
+if ('serviceWorker' in navigator) {
   navigator.serviceWorker
-           .register('/service-worker.js');
+    .register('/service-worker.js');
 }
