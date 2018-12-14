@@ -17,6 +17,7 @@ Route::POST('/user/login', 'Auth\LoginController@login');
 Route::middleware(['api', 'api.auth'])->group(function () {
     Route::POST('/room', 'RoomController@store');
     Route::GET('/room/{room}', 'RoomController@index');
+    Route::POST('/room/{room}/match', 'RoomController@matchInit');
     Route::POST('/room/{room}/join', 'RoomController@join');
 
     Route::POST('/room/{room}/invites', 'InviteController@invite');

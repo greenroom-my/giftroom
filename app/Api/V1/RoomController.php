@@ -34,9 +34,11 @@ class RoomController
                 'members.wishlists' => function ($query) use ($room) {
                     $query->where('room_id', $room->id);
                 }
-                ]);
+            ]);
             $room->load('invites');
             $room['wishlists'] = WishlistService::find($room, $request->user());
+            $room['matchReady'] = RoomService::isWishlistFulfilled($room);
+            $room['matched'] = RoomService::isMatched($room);
 
             $userMsg = $developerMsg = 'Retrieved room successfully';
             return JsonResponse::success($developerMsg, $userMsg, $room);
@@ -111,7 +113,30 @@ class RoomController
         }
     }
 
-    public function match(Request $request, Room $room) {
+    public function matchInit(Request $request, Room $room)
+    {
+        try {
+            //Check isHost
+            if ($request->get('user')->id !== $room->created_by)
+                throw new \Exception('You are not authorised to draw match');
+
+            //Check wishlists are filled
+            if (!RoomService::isWishlistFulfilled($room))
+                throw new \Exception('Your room is not ready. Please have everyone fill in their wishlists first');
+
+            $data = MatchService::match($room->id);
+
+            $userMsg = $developerMsg = 'Room users matched successfully';
+            return JsonResponse::success($developerMsg, $userMsg, $data);
+        } catch (\Exception $e) {
+            $developerMsg = $e->getMessage();
+            $userMsg = $e->getMessage();
+            return JsonResponse::error($developerMsg, $userMsg);
+        }
+    }
+
+    public function match(Request $request, Room $room)
+    {
         try {
             $user = $request->user();
             $match = MatchService::find($room, $user);

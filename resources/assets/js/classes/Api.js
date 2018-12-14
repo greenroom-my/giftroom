@@ -5,10 +5,10 @@ export default class API {
             authLogin: 'user/login',
             authRegister: 'user/register',
             roomCreate: 'room',
-            roomJoin: 'room/join',
             roomInfo: 'room/{name}',
             roomInvite: 'room/{name}/invites',
             roomJoin: 'room/{name}/join',
+            roomMatch: 'room/{name}/match',
             wishList: 'room/{name}/my-wish-list',
             match: 'room/{name}/my-match',
         }

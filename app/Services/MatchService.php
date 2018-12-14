@@ -12,8 +12,11 @@ class MatchService
      */
     public static function match($roomId)
     {
-        $matches = self::random($roomId);
+        $room = RoomService::find($roomId);
+        if( RoomService::isMatched($room))
+            throw new \Exception('Room is already matched');
 
+        $matches = self::random($roomId);
         foreach($matches as $key => $value) {
             Match::create([
                 'santa_id' => $key,
