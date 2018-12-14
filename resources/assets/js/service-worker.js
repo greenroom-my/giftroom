@@ -1,4 +1,4 @@
-var cacheName = 'giftroom';
+var cacheName = 'giftroom-20181214-2';
 
 var filesToCache = [
   '/',
@@ -18,7 +18,7 @@ self.addEventListener('activate', function (e){
   e.waitUntil(
     caches.keys().then(function (keyList){
       return Promise.all(keyList.map(function (key){
-        if ( key !== cacheName && key !== dataCacheName ) {
+        if ( key !== cacheName) {
           return caches.delete(key);
         }
       }));
