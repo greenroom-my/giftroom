@@ -95,8 +95,31 @@ class RoomService
         }
 
         return $test;
-//        $room = $room->whereHas('members', function ($query) use ($user) {
-//            $query->where('users.id', '=' , $user->id);
-//        })->first();
+    }
+
+    public static function isWishlistFulfilled(Room $room)
+    {
+        $members = $room->members->load('wishlists');
+        $unfilledMembers = $members->filter(function($member) {
+            if(count($member->wishlists) == 0)
+                return $member;
+        });
+
+        if(count($unfilledMembers) > 0 || count($room->invites) > 0)
+            return false;
+
+        return true;
+    }
+
+    public static function isMatched(Room $room)
+    {
+        if (!self::isWishlistFulfilled($room))
+            return false;
+
+        $matchExist = Match::where('room_id', $room->id)->first();
+        if(!$matchExist)
+            return false;
+
+        return true;
     }
 }
